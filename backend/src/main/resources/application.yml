@@ -1,0 +1,11 @@
+spring:
+  profiles:
+    active: dev
+  jackson:
+    serialization:
+      write-dates-as-timestamps: false
+
+jwt:
+  secret: c2thbGEtZnVuZC1zZWNyZXQta2V5LXN1cGVyLXNlY3VyZS0yNTYtYml0LWhhc2gta2V5LXRlc3Q=
+  access-token-expiration-ms: 259200000 # 3 days
+  refresh-token-expiration-ms: 1209600000 # 14 days
