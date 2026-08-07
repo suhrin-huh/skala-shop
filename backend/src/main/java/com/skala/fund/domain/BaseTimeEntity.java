@@ -1,4 +1,4 @@
-package com.skala.fund.common;
+package com.skala.fund.domain;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.EntityListeners;

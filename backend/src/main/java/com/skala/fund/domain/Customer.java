@@ -1,8 +1,8 @@
 package com.skala.fund.domain;
 
-import com.skala.fund.common.BaseTimeEntity;
-import com.skala.fund.common.CustomException;
-import com.skala.fund.common.ErrorCode;
+import com.skala.fund.domain.BaseTimeEntity;
+import com.skala.fund.common.exception.CustomException;
+import com.skala.fund.common.exception.ErrorCode;
 import jakarta.persistence.*;
 import lombok.AccessLevel;
 import lombok.Builder;

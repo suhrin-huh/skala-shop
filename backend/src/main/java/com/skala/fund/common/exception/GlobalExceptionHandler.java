@@ -1,5 +1,6 @@
-package com.skala.fund.common;
+package com.skala.fund.common.exception;
 
+import com.skala.fund.common.response.ApiResponse;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.MethodArgumentNotValidException;

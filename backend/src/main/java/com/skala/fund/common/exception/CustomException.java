@@ -1,4 +1,4 @@
-package com.skala.fund.common;
+package com.skala.fund.common.exception;
 
 import lombok.Getter;
 

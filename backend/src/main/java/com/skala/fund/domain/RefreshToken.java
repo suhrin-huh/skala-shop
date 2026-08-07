@@ -1,6 +1,6 @@
 package com.skala.fund.domain;
 
-import com.skala.fund.common.BaseTimeEntity;
+import com.skala.fund.domain.BaseTimeEntity;
 import jakarta.persistence.*;
 import lombok.AccessLevel;
 import lombok.Builder;
