@@ -1,0 +1,931 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>텀블벅 — 창작자를 위한 크라우드펀딩</title>
+<link rel="stylesheet" as="style" crossorigin href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable-dynamic-subset.min.css">
+<style>
+/* ============================================================
+   Design Tokens — tumblbug-design-system.md
+   ============================================================ */
+:root{
+  /* Brand & Accent */
+  --color-primary:#ff5757;
+  --color-primary-strong:#e84545;
+  --color-primary-soft:#ffeced;
+  --color-primary-disabled:#ffc9c9;
+  --color-violet:#7a4df5;
+
+  /* Surface */
+  --color-canvas:#ffffff;
+  --color-surface-soft:#f5f5f5;
+  --color-surface-strong:#ebebeb;
+
+  /* Hairlines */
+  --color-hairline:#e5e5e5;
+  --color-hairline-soft:#f0f0f0;
+  --color-border-strong:#d4d4d4;
+
+  /* Text */
+  --color-ink:#212124;
+  --color-body:#3d3d3d;
+  --color-muted:#77777a;
+  --color-muted-soft:#a5a5a8;
+  --color-on-primary:#ffffff;
+
+  /* Semantic */
+  --color-success:#2ba471;
+  --color-warning:#f5a623;
+  --color-error:#d92d20;
+  --color-ad-label:#a5a5a8;
+
+  /* Scrim */
+  --color-scrim:rgba(0,0,0,.55);
+  --scrim-hero:linear-gradient(90deg,rgba(0,0,0,.72) 0%,rgba(0,0,0,.45) 38%,rgba(0,0,0,0) 62%);
+
+  /* Radius */
+  --rounded-sm:8px;
+  --rounded-sm-lg:10px;
+  --rounded-md:12px;
+  --rounded-lg:22px;
+  --rounded-full:9999px;
+
+  /* Spacing */
+  --space-xxs:2px; --space-xs:4px; --space-sm:8px; --space-md:12px;
+  --space-base:16px; --space-lg:24px; --space-xl:32px; --space-xxl:40px;
+  --space-section:56px;
+
+  /* Elevation */
+  --elevation-floating:0 2px 8px rgba(0,0,0,.08);
+  --elevation-overlay-control:rgba(0,0,0,.35);
+
+  /* Motion */
+  --ease:cubic-bezier(.2,0,0,1);
+  --dur:200ms;
+
+  --container:1240px;
+  --sidebar:356px;
+}
+
+*,*::before,*::after{box-sizing:border-box;}
+html,body{margin:0;padding:0;}
+body{
+  background:var(--color-canvas);
+  color:var(--color-ink);
+  font-family:"Pretendard Variable",Pretendard,-apple-system,"Apple SD Gothic Neo","Noto Sans KR","Malgun Gothic",system-ui,sans-serif;
+  font-size:15px;
+  line-height:1.5;
+  letter-spacing:-.2px;
+  -webkit-font-smoothing:antialiased;
+}
+img{display:block;max-width:100%;}
+a{color:inherit;text-decoration:none;}
+button{font:inherit;color:inherit;background:none;border:0;padding:0;cursor:pointer;letter-spacing:inherit;}
+ul{margin:0;padding:0;list-style:none;}
+:focus-visible{outline:2px solid var(--color-ink);outline-offset:2px;border-radius:4px;}
+.container{max-width:var(--container);margin:0 auto;padding:0 24px;}
+.sr-only{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap;}
+.no-scrollbar{scrollbar-width:none;-ms-overflow-style:none;}
+.no-scrollbar::-webkit-scrollbar{display:none;}
+
+/* ============================================================
+   Utility bar
+   ============================================================ */
+.utility-bar{border-bottom:0;}
+.utility-bar .container{display:flex;justify-content:flex-end;align-items:center;gap:var(--space-md);height:36px;}
+.store-icons{display:flex;gap:10px;align-items:center;}
+.store-icons svg{width:17px;height:17px;fill:var(--color-ink);}
+.app-only{
+  display:flex;align-items:center;gap:4px;
+  font-size:13px;color:var(--color-ink);letter-spacing:-.2px;
+}
+.app-only svg{width:12px;height:12px;stroke:var(--color-ink);fill:none;stroke-width:2;}
+
+/* ============================================================
+   Header main
+   ============================================================ */
+.header-main .container{display:flex;align-items:center;gap:var(--space-lg);height:76px;}
+.wordmark{
+  font-size:31px;font-weight:600;font-style:italic;letter-spacing:-1.2px;
+  color:var(--color-ink);flex:0 0 auto;line-height:1;
+  transform:skewX(-3deg);
+  font-family:"Pretendard Variable",Pretendard,sans-serif;
+}
+.wordmark .slash{position:relative;}
+.wordmark .slash::after{
+  content:"";position:absolute;left:-3px;top:38%;width:11px;height:1.6px;
+  background:var(--color-ink);transform:rotate(-12deg);
+}
+.search-field{
+  position:relative;flex:0 1 380px;
+}
+.search-field input{
+  width:100%;height:48px;border:1px solid transparent;border-radius:var(--rounded-sm-lg);
+  background:var(--color-surface-soft);padding:0 48px 0 18px;
+  font:inherit;font-size:15px;letter-spacing:-.2px;color:var(--color-ink);
+  transition:border-color var(--dur) var(--ease),background var(--dur) var(--ease);
+}
+.search-field input::placeholder{color:var(--color-muted-soft);}
+.search-field input:focus{outline:none;border-color:var(--color-ink);background:var(--color-canvas);}
+.search-field button{
+  position:absolute;right:6px;top:50%;transform:translateY(-50%);
+  width:40px;height:40px;display:grid;place-items:center;border-radius:var(--rounded-sm);
+}
+.search-field svg{width:21px;height:21px;stroke:var(--color-ink);fill:none;stroke-width:2;stroke-linecap:round;}
+.header-util{margin-left:auto;display:flex;align-items:center;gap:var(--space-base);font-size:15px;font-weight:700;letter-spacing:-.3px;}
+.header-util .divider{width:1px;height:14px;background:var(--color-hairline);}
+
+/* ============================================================
+   Nav bar
+   ============================================================ */
+.nav-bar{border-bottom:1px solid var(--color-hairline);position:sticky;top:0;background:var(--color-canvas);z-index:40;}
+.nav-bar .container{display:flex;align-items:center;gap:6px;height:56px;}
+.nav-scroll{display:flex;align-items:center;gap:2px;overflow-x:auto;flex:1;min-width:0;}
+.nav-tab{
+  position:relative;display:inline-flex;align-items:center;gap:6px;
+  padding:16px 14px;font-size:17px;font-weight:600;letter-spacing:-.3px;
+  color:var(--color-ink);white-space:nowrap;
+}
+.nav-tab::after{
+  content:"";position:absolute;left:50%;bottom:8px;transform:translateX(-50%) scaleX(0);
+  width:calc(100% - 28px);height:3px;background:var(--color-ink);border-radius:2px;
+  transition:transform var(--dur) var(--ease),opacity var(--dur) var(--ease);opacity:0;
+}
+.nav-tab:hover::after{transform:translateX(-50%) scaleX(1);opacity:.4;}
+.nav-tab[aria-current="page"]::after{transform:translateX(-50%) scaleX(1);opacity:1;}
+.nav-tab.category{gap:9px;padding-right:20px;}
+.nav-tab.category::after{display:none;}
+.hamburger{display:flex;flex-direction:column;gap:3.5px;}
+.hamburger i{display:block;width:16px;height:1.8px;background:var(--color-ink);border-radius:2px;}
+.badge-n{
+  display:inline-grid;place-items:center;width:16px;height:16px;border-radius:var(--rounded-full);
+  background:var(--color-primary);color:var(--color-on-primary);
+  font-size:10px;font-weight:700;letter-spacing:0;line-height:1;
+}
+.button-outline-pill{
+  flex:0 0 auto;border:1px solid var(--color-border-strong);border-radius:var(--rounded-full);
+  padding:10px 22px;font-size:15px;font-weight:600;letter-spacing:-.3px;background:var(--color-canvas);
+  transition:border-color var(--dur) var(--ease),background var(--dur) var(--ease);
+}
+.button-outline-pill:hover{border-color:var(--color-ink);background:var(--color-surface-soft);}
+
+/* ============================================================
+   Page grid
+   ============================================================ */
+.page{padding-top:var(--space-xl);padding-bottom:var(--space-section);}
+.page-grid{display:grid;grid-template-columns:minmax(0,1fr) var(--sidebar);gap:var(--space-xxl);}
+
+/* ============================================================
+   Hero
+   ============================================================ */
+.hero{position:relative;border-radius:var(--rounded-md);overflow:hidden;aspect-ratio:16/7;background:var(--color-surface-strong);}
+.hero-slide{
+  position:absolute;inset:0;opacity:0;transition:opacity 480ms var(--ease);
+  display:flex;align-items:center;
+}
+.hero-slide.is-active{opacity:1;}
+.hero-slide::before{content:"";position:absolute;inset:0;background:var(--scrim-hero);}
+.hero-art{position:absolute;inset:0;}
+.hero-copy{position:relative;padding:0 56px;max-width:60%;color:#fff;}
+.hero-eyebrow{
+  display:inline-block;margin-bottom:14px;padding:5px 10px;border-radius:var(--rounded-sm);
+  background:rgba(255,255,255,.16);font-size:12px;font-weight:600;letter-spacing:-.2px;
+  backdrop-filter:blur(4px);
+}
+.hero-title{margin:0;font-size:40px;font-weight:800;line-height:1.32;letter-spacing:-1px;}
+.hero-sub{margin:14px 0 0;font-size:17px;font-weight:600;letter-spacing:-.3px;opacity:.92;}
+.hero-controls{position:absolute;right:24px;bottom:24px;display:flex;align-items:center;gap:10px;z-index:2;}
+.hero-counter{
+  padding:7px 14px;border-radius:var(--rounded-full);background:rgba(0,0,0,.45);
+  color:#fff;font-size:13px;font-weight:400;letter-spacing:0;backdrop-filter:blur(4px);
+}
+.hero-counter b{font-weight:700;}
+.hero-counter span{opacity:.7;}
+.hero-arrow{
+  width:40px;height:40px;border-radius:var(--rounded-full);background:var(--elevation-overlay-control);
+  display:grid;place-items:center;backdrop-filter:blur(4px);
+  transition:background var(--dur) var(--ease);
+}
+.hero-arrow:hover{background:rgba(0,0,0,.55);}
+.hero-arrow svg{width:18px;height:18px;stroke:#fff;fill:none;stroke-width:2.2;stroke-linecap:round;stroke-linejoin:round;}
+
+/* ============================================================
+   Category strip
+   ============================================================ */
+.category-strip{margin-top:var(--space-xl);}
+.category-list{display:flex;gap:var(--space-base);overflow-x:auto;padding:4px 0;}
+.category-item{flex:1 0 auto;min-width:88px;display:flex;flex-direction:column;align-items:center;gap:10px;}
+.category-tile{
+  position:relative;width:72px;height:72px;border-radius:var(--rounded-lg);
+  background:var(--color-surface-soft);overflow:hidden;
+  transition:transform 180ms var(--ease),box-shadow 180ms var(--ease);
+}
+.category-item:hover .category-tile{transform:translateY(-2px);box-shadow:var(--elevation-floating);}
+.category-tile .art{position:absolute;inset:0;display:grid;place-items:center;font-size:30px;}
+.category-tile-new-dot{
+  position:absolute;top:-2px;right:-2px;width:18px;height:18px;border-radius:var(--rounded-full);
+  background:var(--color-primary);color:#fff;font-size:10px;font-weight:700;letter-spacing:0;
+  display:grid;place-items:center;border:2px solid var(--color-canvas);z-index:2;
+}
+.category-label{font-size:14px;font-weight:400;letter-spacing:-.2px;color:var(--color-ink);text-align:center;}
+
+/* ============================================================
+   Section head
+   ============================================================ */
+.section{margin-top:var(--space-section);}
+.section-head{display:flex;align-items:baseline;justify-content:space-between;gap:var(--space-base);margin-bottom:var(--space-base);}
+.section-title{margin:0;font-size:22px;font-weight:700;line-height:1.36;letter-spacing:-.5px;}
+.section-caption{margin:2px 0 var(--space-lg);font-size:13px;color:var(--color-muted);letter-spacing:-.2px;}
+.button-ghost-text{font-size:13px;color:var(--color-muted);letter-spacing:-.2px;}
+.button-ghost-text:hover{color:var(--color-ink);text-decoration:underline;}
+
+/* ============================================================
+   Project card
+   ============================================================ */
+.project-grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:var(--space-lg);}
+.project-card{position:relative;}
+.card-thumb{
+  position:relative;aspect-ratio:4/3;border-radius:var(--rounded-md);overflow:hidden;
+  background:var(--color-surface-strong);
+  transition:transform 180ms var(--ease),box-shadow 180ms var(--ease);
+}
+.project-card:hover .card-thumb{transform:translateY(-2px);box-shadow:var(--elevation-floating);}
+.card-thumb .art{position:absolute;inset:0;}
+.art-label{
+  position:absolute;inset:auto 0 0 0;padding:14px 16px;color:#fff;
+  font-size:15px;font-weight:700;letter-spacing:-.3px;text-shadow:0 1px 8px rgba(0,0,0,.4);
+}
+.icon-button-heart{
+  position:absolute;right:10px;bottom:10px;width:28px;height:28px;display:grid;place-items:center;
+  border-radius:var(--rounded-full);z-index:2;
+}
+.icon-button-heart svg{
+  width:22px;height:22px;fill:rgba(0,0,0,.15);stroke:#fff;stroke-width:1.8;
+  filter:drop-shadow(0 1px 3px rgba(0,0,0,.35));
+  transition:fill 140ms var(--ease),stroke 140ms var(--ease),transform 140ms var(--ease);
+}
+.icon-button-heart[aria-pressed="true"] svg{fill:var(--color-primary);stroke:var(--color-primary);}
+.icon-button-heart.pop svg{transform:scale(1.25);}
+.card-meta{padding-top:var(--space-md);}
+.card-creator{font-size:13px;font-weight:400;color:var(--color-muted);letter-spacing:-.2px;}
+.card-title{
+  margin:4px 0 0;font-size:15px;font-weight:600;line-height:1.45;letter-spacing:-.3px;color:var(--color-ink);
+  display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;
+}
+.badge-row{display:flex;flex-wrap:wrap;align-items:center;gap:6px;margin-top:10px;}
+.badge{font-size:12px;font-weight:600;letter-spacing:-.2px;border-radius:6px;padding:4px 8px;line-height:1.2;}
+.badge-creator{background:var(--color-violet);color:#fff;}
+.badge-creator::before{content:"◆ ";font-size:9px;vertical-align:1px;}
+.badge-meta{background:var(--color-surface-strong);color:var(--color-body);}
+.badge-urgent{background:var(--color-primary-soft);color:var(--color-primary);}
+.badge-ad{position:absolute;top:0;right:0;font-size:12px;font-weight:600;color:var(--color-ad-label);}
+.percent{margin-top:8px;font-size:17px;font-weight:800;letter-spacing:-.4px;color:var(--color-primary);}
+.progress{margin-top:8px;height:3px;border-radius:2px;background:var(--color-primary-soft);overflow:hidden;}
+.progress > i{display:block;height:100%;background:var(--color-primary);border-radius:2px;}
+
+/* ============================================================
+   Ranking sidebar
+   ============================================================ */
+.rank-list{display:flex;flex-direction:column;gap:var(--space-base);}
+.rank-item{display:grid;grid-template-columns:96px minmax(0,1fr);gap:var(--space-md);align-items:start;position:relative;}
+.rank-thumb{position:relative;aspect-ratio:1/1;border-radius:var(--rounded-md);overflow:hidden;background:var(--color-surface-strong);}
+.rank-thumb .art{position:absolute;inset:0;}
+.rank-badge{
+  position:absolute;top:0;left:0;width:24px;height:24px;z-index:2;
+  background:var(--color-primary);color:#fff;
+  border-radius:0 0 var(--rounded-sm) 0;
+  display:grid;place-items:center;font-size:13px;font-weight:700;letter-spacing:-.2px;
+}
+.rank-item .icon-button-heart{right:6px;bottom:6px;}
+.rank-item .card-title{font-size:16px;}
+.rank-item .badge-row{margin-top:8px;}
+.rank-item .percent{margin-top:6px;}
+
+/* ============================================================
+   Footer
+   ============================================================ */
+.footer{border-top:1px solid var(--color-hairline);padding:var(--space-section) 0 var(--space-xl);}
+.footer-cols{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:var(--space-lg);}
+.footer-col h3{margin:0 0 14px;font-size:15px;font-weight:700;letter-spacing:-.3px;}
+.footer-col li + li{margin-top:10px;}
+.footer-col a{font-size:14px;color:var(--color-muted);letter-spacing:-.2px;}
+.footer-col a:hover{color:var(--color-ink);text-decoration:underline;}
+.legal-band{margin-top:var(--space-xl);padding-top:var(--space-lg);border-top:1px solid var(--color-hairline-soft);
+  font-size:12px;line-height:1.7;color:var(--color-muted-soft);letter-spacing:0;}
+.legal-band p{margin:0 0 6px;}
+
+/* ============================================================
+   Artwork (이미지 자리 — 실제 서비스에서는 프로젝트 대표 이미지로 교체)
+   ============================================================ */
+.art-a{background:linear-gradient(135deg,#1c3d33 0%,#2f6b57 55%,#0f2a24 100%);}
+.art-a::after{content:"";position:absolute;right:14%;top:26%;width:34%;aspect-ratio:8/5;border-radius:6px;
+  background:radial-gradient(circle at 32% 50%,#6fd3c0 0 12%,transparent 13%),radial-gradient(circle at 68% 50%,#6fd3c0 0 12%,transparent 13%),#22463c;
+  box-shadow:0 12px 40px rgba(0,0,0,.45);}
+.art-b{background:linear-gradient(120deg,#101323 0%,#232a4d 60%,#0b0d18 100%);}
+.art-b::after{content:"";position:absolute;left:58%;top:18%;width:30%;height:64%;border-radius:10px;
+  background:repeating-linear-gradient(180deg,rgba(255,255,255,.09) 0 2px,transparent 2px 9px),#171b33;}
+.art-c{background:linear-gradient(140deg,#f6d6c2 0%,#e79f7d 50%,#b96a4d 100%);}
+.art-c::after{content:"";position:absolute;left:52%;top:24%;width:36%;height:56%;border-radius:50% 50% 44% 44%;background:rgba(255,255,255,.35);}
+.art-1{background:linear-gradient(160deg,#f2e9f7 0%,#dcd0ec 45%,#b9c6e8 100%);}
+.art-2{background:linear-gradient(150deg,#0f1424 0%,#1e2740 100%);}
+.art-3{background:linear-gradient(150deg,#f7e7d8 0%,#d9b79a 100%);}
+.art-4{background:linear-gradient(150deg,#eef2f6 0%,#cbd7e2 100%);}
+.art-5{background:linear-gradient(150deg,#101a3a 0%,#2b3f7a 60%,#5f7fd6 100%);}
+.art-6{background:linear-gradient(150deg,#dfe9f5 0%,#a8bfe0 100%);}
+.art-7{background:linear-gradient(150deg,#fff1e2 0%,#ffd0a6 100%);}
+.art-8{background:linear-gradient(150deg,#1a1a1f 0%,#3a3a44 100%);}
+.art-9{background:linear-gradient(150deg,#ffe9ec 0%,#ffb3bd 100%);}
+.art-10{background:linear-gradient(150deg,#e6f6ef 0%,#a9dcc6 100%);}
+.art-11{background:linear-gradient(150deg,#f0ecff 0%,#c3b6f5 100%);}
+.art-12{background:linear-gradient(150deg,#fff8dc 0%,#f2d98a 100%);}
+
+/* ============================================================
+   Responsive
+   ============================================================ */
+@media (max-width:1128px){
+  .page-grid{grid-template-columns:minmax(0,1fr);}
+  .sidebar{margin-top:var(--space-section);}
+  .rank-list{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));}
+  .project-grid{grid-template-columns:repeat(3,minmax(0,1fr));}
+  .hero-copy{padding:0 40px;max-width:70%;}
+  .hero-title{font-size:32px;}
+}
+@media (max-width:744px){
+  .utility-bar{display:none;}
+  .header-main .container{height:64px;flex-wrap:wrap;padding-bottom:12px;}
+  .search-field{order:3;flex:1 0 100%;}
+  .search-field input{height:44px;}
+  .header-util{font-size:14px;gap:12px;}
+  .wordmark{font-size:26px;}
+  .page-grid{gap:0;}
+  .project-grid{grid-template-columns:repeat(2,minmax(0,1fr));gap:var(--space-base);}
+  .rank-list{grid-template-columns:minmax(0,1fr);}
+  .hero{aspect-ratio:4/3;}
+  .hero-slide{align-items:flex-end;}
+  .hero-slide::before{background:linear-gradient(0deg,rgba(0,0,0,.75) 0%,rgba(0,0,0,.15) 60%,rgba(0,0,0,0) 100%);}
+  .hero-copy{padding:0 20px 68px;max-width:100%;}
+  .hero-title{font-size:26px;letter-spacing:-.6px;}
+  .hero-sub{font-size:15px;}
+  .hero-arrow{display:none;}
+  .hero-controls{right:16px;bottom:16px;}
+  .footer-cols{grid-template-columns:repeat(2,minmax(0,1fr));gap:var(--space-xl) var(--space-lg);}
+}
+@media (prefers-reduced-motion:reduce){
+  *{transition-duration:0ms!important;animation-duration:0ms!important;}
+}
+</style>
+</head>
+<body>
+
+<!-- ========================= Utility bar ========================= -->
+<div class="utility-bar">
+  <div class="container">
+    <div class="store-icons" aria-hidden="true">
+      <svg viewBox="0 0 24 24"><path d="M3.6 2.2c-.3.3-.5.8-.5 1.4v16.8c0 .6.2 1.1.5 1.4l.1.1 9.4-9.4v-.2L3.6 2.2zm12 5.9L5.9 2.6l7.6 7.6 2.1-2.1zm2.8 1.6-2.3-1.3-2.3 2.3 2.3 2.3 2.3-1.3c.7-.4.7-1.6 0-2zm-2.8 4.2-2.1-2.1-7.6 7.6 9.7-5.5z"/></svg>
+      <svg viewBox="0 0 24 24"><path d="M16.4 12.7c0-2.2 1.8-3.3 1.9-3.4-1-1.5-2.6-1.7-3.2-1.7-1.4-.1-2.7.8-3.4.8-.7 0-1.8-.8-2.9-.8-1.5 0-2.9.9-3.6 2.2-1.6 2.7-.4 6.7 1.1 8.9.7 1.1 1.6 2.3 2.8 2.2 1.1 0 1.5-.7 2.9-.7s1.7.7 2.9.7c1.2 0 2-1.1 2.7-2.2.9-1.2 1.2-2.4 1.2-2.5-.1 0-2.4-.9-2.4-3.5zM14.2 5.7c.6-.7 1-1.7.9-2.7-.9 0-2 .6-2.6 1.3-.6.6-1.1 1.7-.9 2.6 1 .1 2-.5 2.6-1.2z"/></svg>
+    </div>
+    <button class="app-only" type="button">
+      오직 앱에서만
+      <svg viewBox="0 0 24 24"><path d="m6 9 6 6 6-6"/></svg>
+    </button>
+  </div>
+</div>
+
+<!-- ========================= Header ========================= -->
+<header class="header-main">
+  <div class="container">
+    <a href="#" class="wordmark" aria-label="텀블벅 홈">tumb<span class="slash">l</span>bug</a>
+    <form class="search-field" role="search" onsubmit="return false;">
+      <label class="sr-only" for="q">프로젝트 검색</label>
+      <input id="q" type="search" placeholder="검색어를 입력해주세요">
+      <button type="submit" aria-label="검색">
+        <svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></svg>
+      </button>
+    </form>
+    <nav class="header-util" aria-label="계정">
+      <a href="#">프로젝트 올리기</a>
+      <span class="divider" aria-hidden="true"></span>
+      <a href="#">로그인/회원가입</a>
+    </nav>
+  </div>
+</header>
+
+<!-- ========================= Nav ========================= -->
+<nav class="nav-bar" aria-label="주요 메뉴">
+  <div class="container">
+    <div class="nav-scroll no-scrollbar">
+      <button class="nav-tab category" type="button">
+        <span class="hamburger" aria-hidden="true"><i></i><i></i><i></i></span>카테고리
+      </button>
+      <a class="nav-tab" href="#" aria-current="page">홈</a>
+      <a class="nav-tab" href="#"><span class="badge-n">N</span>상시 판매</a>
+      <a class="nav-tab" href="#">인기</a>
+      <a class="nav-tab" href="#">공개예정</a>
+      <a class="nav-tab" href="#">신규</a>
+      <a class="nav-tab" href="#">마감임박</a>
+      <a class="nav-tab" href="#"><span class="badge-n">N</span>럭키드로우</a>
+      <a class="nav-tab" href="#"><span class="badge-n">N</span>영퍼센트 레터</a>
+    </div>
+    <button class="button-outline-pill" type="button">창작자센터</button>
+  </div>
+</nav>
+
+<!-- ========================= Main ========================= -->
+<main class="page">
+  <div class="container page-grid">
+
+    <!-- ---------- Main column ---------- -->
+    <div>
+      <!-- Hero -->
+      <section class="hero" aria-roledescription="캐러셀" aria-label="추천 프로젝트">
+        <article class="hero-slide is-active" data-slide>
+          <div class="hero-art art-a" aria-hidden="true"></div>
+          <div class="hero-copy">
+            <span class="hero-eyebrow">전통공예</span>
+            <h2 class="hero-title">다섯 개의 문양<br>다섯 가지 기원</h2>
+            <p class="hero-sub">장수의 날개, 전통 자수 카드지갑</p>
+          </div>
+        </article>
+        <article class="hero-slide" data-slide>
+          <div class="hero-art art-b" aria-hidden="true"></div>
+          <div class="hero-copy">
+            <span class="hero-eyebrow">테크·가전</span>
+            <h2 class="hero-title">한 줄이면<br>작품이 완성됩니다</h2>
+            <p class="hero-sub">창작자를 위한 집필 도구, 캐스트 스튜디오</p>
+          </div>
+        </article>
+        <article class="hero-slide" data-slide>
+          <div class="hero-art art-c" aria-hidden="true"></div>
+          <div class="hero-copy">
+            <span class="hero-eyebrow">푸드</span>
+            <h2 class="hero-title">오후를 깨우는<br>가장 조용한 방법</h2>
+            <p class="hero-sub">카페인 없이 청량한, 여름 냉침차 6종</p>
+          </div>
+        </article>
+        <div class="hero-controls">
+          <div class="hero-counter" aria-live="polite"><b id="heroIndex">1</b> <span>/ 3</span></div>
+          <button class="hero-arrow" type="button" data-hero="prev" aria-label="이전 배너">
+            <svg viewBox="0 0 24 24"><path d="m15 5-7 7 7 7"/></svg>
+          </button>
+          <button class="hero-arrow" type="button" data-hero="next" aria-label="다음 배너">
+            <svg viewBox="0 0 24 24"><path d="m9 5 7 7-7 7"/></svg>
+          </button>
+        </div>
+      </section>
+
+      <!-- Category strip -->
+      <section class="category-strip" aria-label="기획전">
+        <ul class="category-list no-scrollbar">
+          <li class="category-item"><a href="#">
+            <span class="category-tile"><span class="category-tile-new-dot">N</span><span class="art art-12" aria-hidden="true">🌕</span></span>
+          </a><span class="category-label">풍성한 추석</span></li>
+          <li class="category-item"><a href="#">
+            <span class="category-tile"><span class="art art-4" aria-hidden="true">📺</span></span>
+          </a><span class="category-label">자취 치트키</span></li>
+          <li class="category-item"><a href="#">
+            <span class="category-tile"><span class="art art-10" aria-hidden="true">👗</span></span>
+          </a><span class="category-label">시즌 패션</span></li>
+          <li class="category-item"><a href="#">
+            <span class="category-tile"><span class="art art-6" aria-hidden="true">🐋</span></span>
+          </a><span class="category-label">바다 큐브</span></li>
+          <li class="category-item"><a href="#">
+            <span class="category-tile"><span class="art art-11" aria-hidden="true">📮</span></span>
+          </a><span class="category-label">리빙&문구</span></li>
+          <li class="category-item"><a href="#">
+            <span class="category-tile"><span class="art art-1" aria-hidden="true">🅰️</span></span>
+          </a><span class="category-label">상시 에셋</span></li>
+          <li class="category-item"><a href="#">
+            <span class="category-tile"><span class="art art-9" aria-hidden="true">🧪</span></span>
+          </a><span class="category-label">체험단</span></li>
+          <li class="category-item"><a href="#">
+            <span class="category-tile"><span class="art art-8" aria-hidden="true">🔢</span></span>
+          </a><span class="category-label">0 to 1</span></li>
+        </ul>
+      </section>
+
+      <!-- Featured -->
+      <section class="section" aria-labelledby="featured">
+        <div class="section-head">
+          <h2 class="section-title" id="featured">주목할 만한 프로젝트</h2>
+          <a class="button-ghost-text" href="#">전체보기</a>
+        </div>
+        <div class="project-grid">
+
+          <article class="project-card">
+            <div class="card-thumb">
+              <span class="art art-1" aria-hidden="true"></span>
+              <span class="art-label">제20회 평화인권마당극제</span>
+              <button class="icon-button-heart" type="button" aria-pressed="false" aria-label="찜하기">
+                <svg viewBox="0 0 24 24"><path d="M12 20.3 4.6 13a4.6 4.6 0 0 1 6.5-6.5l.9.9.9-.9A4.6 4.6 0 0 1 19.4 13z"/></svg>
+              </button>
+            </div>
+            <div class="card-meta">
+              <p class="card-creator">놀이패 한라산</p>
+              <h3 class="card-title">제20회 평화인권마당극제 &lt;바람의 기억&gt; 공연 후원</h3>
+              <div class="badge-row">
+                <span class="badge badge-creator">좋은창작자</span>
+                <span class="badge badge-meta">1,240만 원+</span>
+              </div>
+              <p class="percent">248% 달성</p>
+              <div class="progress"><i style="width:100%"></i></div>
+            </div>
+          </article>
+
+          <article class="project-card">
+            <div class="card-thumb">
+              <span class="art art-2" aria-hidden="true"></span>
+              <span class="art-label">Cast Studio</span>
+              <button class="icon-button-heart" type="button" aria-pressed="false" aria-label="찜하기">
+                <svg viewBox="0 0 24 24"><path d="M12 20.3 4.6 13a4.6 4.6 0 0 1 6.5-6.5l.9.9.9-.9A4.6 4.6 0 0 1 19.4 13z"/></svg>
+              </button>
+            </div>
+            <div class="card-meta">
+              <p class="card-creator">벼뜰</p>
+              <h3 class="card-title">아이디어 한 줄이 작품으로, 창작자용 집필 도구 캐스트 스튜디오</h3>
+              <div class="badge-row">
+                <span class="badge badge-meta">3,860만 원+</span>
+                <span class="badge badge-urgent">오늘 마감</span>
+              </div>
+              <p class="percent">772% 달성</p>
+              <div class="progress"><i style="width:100%"></i></div>
+            </div>
+          </article>
+
+          <article class="project-card">
+            <div class="card-thumb">
+              <span class="art art-3" aria-hidden="true"></span>
+              <span class="art-label">귀향</span>
+              <button class="icon-button-heart" type="button" aria-pressed="false" aria-label="찜하기">
+                <svg viewBox="0 0 24 24"><path d="M12 20.3 4.6 13a4.6 4.6 0 0 1 6.5-6.5l.9.9.9-.9A4.6 4.6 0 0 1 19.4 13z"/></svg>
+              </button>
+            </div>
+            <div class="card-meta">
+              <p class="card-creator">커넥트픽쳐스</p>
+              <h3 class="card-title">[귀향: 언니야 이제 집에 가자] 상영회 개최 및 굿즈 제작</h3>
+              <div class="badge-row">
+                <span class="badge badge-creator">좋은창작자</span>
+                <span class="badge badge-meta">920만 원+</span>
+              </div>
+              <p class="percent">184% 달성</p>
+              <div class="progress"><i style="width:100%"></i></div>
+            </div>
+          </article>
+
+          <article class="project-card">
+            <div class="card-thumb">
+              <span class="art art-4" aria-hidden="true"></span>
+              <span class="art-label">EMS 손목 밴드</span>
+              <button class="icon-button-heart" type="button" aria-pressed="false" aria-label="찜하기">
+                <svg viewBox="0 0 24 24"><path d="M12 20.3 4.6 13a4.6 4.6 0 0 1 6.5-6.5l.9.9.9-.9A4.6 4.6 0 0 1 19.4 13z"/></svg>
+              </button>
+            </div>
+            <div class="card-meta">
+              <p class="card-creator">웰테크</p>
+              <h3 class="card-title">창작자를 위한 EMS 손목 케어 밴드, 하루 10분이면 충분합니다</h3>
+              <div class="badge-row">
+                <span class="badge badge-meta">2,150만 원+</span>
+                <span class="badge badge-meta">4일 남음</span>
+              </div>
+              <p class="percent">430% 달성</p>
+              <div class="progress"><i style="width:100%"></i></div>
+            </div>
+          </article>
+
+        </div>
+      </section>
+
+      <!-- Closing soon -->
+      <section class="section" aria-labelledby="closing">
+        <div class="section-head">
+          <h2 class="section-title" id="closing">마감이 얼마 남지 않았어요</h2>
+          <a class="button-ghost-text" href="#">전체보기</a>
+        </div>
+        <div class="project-grid">
+
+          <article class="project-card">
+            <div class="card-thumb">
+              <span class="art art-5" aria-hidden="true"></span>
+              <span class="art-label">밤의 도서관</span>
+              <button class="icon-button-heart" type="button" aria-pressed="false" aria-label="찜하기">
+                <svg viewBox="0 0 24 24"><path d="M12 20.3 4.6 13a4.6 4.6 0 0 1 6.5-6.5l.9.9.9-.9A4.6 4.6 0 0 1 19.4 13z"/></svg>
+              </button>
+            </div>
+            <div class="card-meta">
+              <p class="card-creator">달빛서가</p>
+              <h3 class="card-title">밤의 도서관 — 잠들기 전 10분을 위한 짧은 소설 12편</h3>
+              <div class="badge-row">
+                <span class="badge badge-urgent">2일 남음</span>
+                <span class="badge badge-meta">640만 원+</span>
+              </div>
+              <p class="percent">213% 달성</p>
+              <div class="progress"><i style="width:100%"></i></div>
+            </div>
+          </article>
+
+          <article class="project-card">
+            <div class="card-thumb">
+              <span class="art art-6" aria-hidden="true"></span>
+              <span class="art-label">파도 수집가</span>
+              <button class="icon-button-heart" type="button" aria-pressed="false" aria-label="찜하기">
+                <svg viewBox="0 0 24 24"><path d="M12 20.3 4.6 13a4.6 4.6 0 0 1 6.5-6.5l.9.9.9-.9A4.6 4.6 0 0 1 19.4 13z"/></svg>
+              </button>
+            </div>
+            <div class="card-meta">
+              <p class="card-creator">파도수집가</p>
+              <h3 class="card-title">손바닥 위의 바다, 레진 아트 큐브 오브제</h3>
+              <div class="badge-row">
+                <span class="badge badge-creator">좋은창작자</span>
+                <span class="badge badge-urgent">오늘 마감</span>
+              </div>
+              <p class="percent">1,024% 달성</p>
+              <div class="progress"><i style="width:100%"></i></div>
+            </div>
+          </article>
+
+          <article class="project-card">
+            <div class="card-thumb">
+              <span class="art art-7" aria-hidden="true"></span>
+              <span class="art-label">첫 문장 노트</span>
+              <button class="icon-button-heart" type="button" aria-pressed="false" aria-label="찜하기">
+                <svg viewBox="0 0 24 24"><path d="M12 20.3 4.6 13a4.6 4.6 0 0 1 6.5-6.5l.9.9.9-.9A4.6 4.6 0 0 1 19.4 13z"/></svg>
+              </button>
+            </div>
+            <div class="card-meta">
+              <p class="card-creator">글쓰는사람들</p>
+              <h3 class="card-title">매일 한 문장씩, 1년을 채우는 첫 문장 노트</h3>
+              <div class="badge-row">
+                <span class="badge badge-meta">3일 남음</span>
+                <span class="badge badge-meta">410만 원+</span>
+              </div>
+              <p class="percent">137% 달성</p>
+              <div class="progress"><i style="width:100%"></i></div>
+            </div>
+          </article>
+
+          <article class="project-card">
+            <div class="card-thumb">
+              <span class="art art-8" aria-hidden="true"></span>
+              <span class="art-label">키보드 위 햄찌</span>
+              <button class="icon-button-heart" type="button" aria-pressed="false" aria-label="찜하기">
+                <svg viewBox="0 0 24 24"><path d="M12 20.3 4.6 13a4.6 4.6 0 0 1 6.5-6.5l.9.9.9-.9A4.6 4.6 0 0 1 19.4 13z"/></svg>
+              </button>
+            </div>
+            <div class="card-meta">
+              <p class="card-creator">키피스룸</p>
+              <h3 class="card-title">키보드 위 &lt;포동포동 햄찌&gt; 손목 받침 인형</h3>
+              <div class="badge-row">
+                <span class="badge badge-meta">200만 원+</span>
+                <span class="badge badge-urgent">1일 남음</span>
+              </div>
+              <p class="percent">409% 달성</p>
+              <div class="progress"><i style="width:100%"></i></div>
+            </div>
+          </article>
+
+        </div>
+      </section>
+    </div>
+
+    <!-- ---------- Ranking sidebar ---------- -->
+    <aside class="sidebar" aria-labelledby="popular">
+      <div class="section-head">
+        <h2 class="section-title" id="popular">인기 프로젝트</h2>
+        <a class="button-ghost-text" href="#">전체보기</a>
+      </div>
+      <p class="section-caption">26.08.07 23:36 기준</p>
+
+      <ol class="rank-list">
+        <li class="rank-item">
+          <div class="rank-thumb">
+            <span class="art art-5" aria-hidden="true"></span>
+            <span class="rank-badge">1</span>
+            <button class="icon-button-heart" type="button" aria-pressed="false" aria-label="찜하기">
+              <svg viewBox="0 0 24 24"><path d="M12 20.3 4.6 13a4.6 4.6 0 0 1 6.5-6.5l.9.9.9-.9A4.6 4.6 0 0 1 19.4 13z"/></svg>
+            </button>
+          </div>
+          <div>
+            <p class="card-creator">디앤씨미디어</p>
+            <h3 class="card-title">레브 첫 콘서트! &lt;초심돌&gt; 소설 단행본 &amp; MD</h3>
+            <div class="badge-row">
+              <span class="badge badge-creator">좋은창작자</span>
+              <span class="badge badge-meta">8.6천만 원+</span>
+            </div>
+            <p class="percent">432% 달성</p>
+          </div>
+        </li>
+
+        <li class="rank-item">
+          <div class="rank-thumb">
+            <span class="art art-6" aria-hidden="true"></span>
+            <span class="rank-badge">2</span>
+            <button class="icon-button-heart" type="button" aria-pressed="false" aria-label="찜하기">
+              <svg viewBox="0 0 24 24"><path d="M12 20.3 4.6 13a4.6 4.6 0 0 1 6.5-6.5l.9.9.9-.9A4.6 4.6 0 0 1 19.4 13z"/></svg>
+            </button>
+          </div>
+          <div>
+            <p class="card-creator">스튜디오 소조</p>
+            <h3 class="card-title">바람 이펙트 완결판 「프로젝트 바람의조각」</h3>
+            <div class="badge-row">
+              <span class="badge badge-creator">좋은창작자</span>
+              <span class="badge badge-meta">1.2천만 원+</span>
+            </div>
+            <p class="percent">2,492% 달성</p>
+          </div>
+        </li>
+
+        <li class="rank-item">
+          <div class="rank-thumb">
+            <span class="art art-11" aria-hidden="true"></span>
+            <span class="rank-badge">3</span>
+            <button class="icon-button-heart" type="button" aria-pressed="false" aria-label="찜하기">
+              <svg viewBox="0 0 24 24"><path d="M12 20.3 4.6 13a4.6 4.6 0 0 1 6.5-6.5l.9.9.9-.9A4.6 4.6 0 0 1 19.4 13z"/></svg>
+            </button>
+          </div>
+          <div>
+            <p class="card-creator">클래스 해피니스</p>
+            <h3 class="card-title">[단행본] 우리 집 고양이는 마법을 씁니다</h3>
+            <div class="badge-row">
+              <span class="badge badge-creator">좋은창작자</span>
+              <span class="badge badge-urgent">오늘 마감</span>
+            </div>
+            <p class="percent">2,405% 달성</p>
+          </div>
+        </li>
+
+        <li class="rank-item">
+          <div class="rank-thumb">
+            <span class="art art-7" aria-hidden="true"></span>
+            <span class="rank-badge">4</span>
+            <button class="icon-button-heart" type="button" aria-pressed="false" aria-label="찜하기">
+              <svg viewBox="0 0 24 24"><path d="M12 20.3 4.6 13a4.6 4.6 0 0 1 6.5-6.5l.9.9.9-.9A4.6 4.6 0 0 1 19.4 13z"/></svg>
+            </button>
+          </div>
+          <div>
+            <p class="card-creator">슬로담</p>
+            <h3 class="card-title">카페인 대신, 오후를 깨우는 청량한 냉침차</h3>
+            <div class="badge-row">
+              <span class="badge badge-meta">360만 원+</span>
+            </div>
+            <p class="percent">729% 달성</p>
+          </div>
+        </li>
+
+        <li class="rank-item">
+          <div class="rank-thumb">
+            <span class="art art-4" aria-hidden="true"></span>
+            <span class="rank-badge">5</span>
+            <button class="icon-button-heart" type="button" aria-pressed="false" aria-label="찜하기">
+              <svg viewBox="0 0 24 24"><path d="M12 20.3 4.6 13a4.6 4.6 0 0 1 6.5-6.5l.9.9.9-.9A4.6 4.6 0 0 1 19.4 13z"/></svg>
+            </button>
+          </div>
+          <div>
+            <p class="card-creator">오디너리에디션</p>
+            <h3 class="card-title">한여름의 빛으로 추억을 담는 필름 카메라</h3>
+            <div class="badge-row">
+              <span class="badge badge-meta">4일 남음</span>
+              <span class="badge badge-meta">700만 원+</span>
+            </div>
+            <p class="percent">1,401% 달성</p>
+          </div>
+        </li>
+
+        <li class="rank-item">
+          <span class="badge-ad">AD</span>
+          <div class="rank-thumb">
+            <span class="art art-8" aria-hidden="true"></span>
+            <span class="rank-badge">6</span>
+            <button class="icon-button-heart" type="button" aria-pressed="false" aria-label="찜하기">
+              <svg viewBox="0 0 24 24"><path d="M12 20.3 4.6 13a4.6 4.6 0 0 1 6.5-6.5l.9.9.9-.9A4.6 4.6 0 0 1 19.4 13z"/></svg>
+            </button>
+          </div>
+          <div>
+            <p class="card-creator">코더 파웬</p>
+            <h3 class="card-title">[8인 머미] 밤에만 열리는 서점, 한정 양장본</h3>
+            <div class="badge-row">
+              <span class="badge badge-meta">1,180만 원+</span>
+            </div>
+            <p class="percent">386% 달성</p>
+          </div>
+        </li>
+      </ol>
+    </aside>
+
+  </div>
+</main>
+
+<!-- ========================= Footer ========================= -->
+<footer class="footer">
+  <div class="container">
+    <div class="footer-cols">
+      <div class="footer-col">
+        <h3>텀블벅</h3>
+        <ul>
+          <li><a href="#">회사 소개</a></li>
+          <li><a href="#">채용</a></li>
+          <li><a href="#">블로그</a></li>
+          <li><a href="#">공지사항</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h3>고객지원</h3>
+        <ul>
+          <li><a href="#">도움말 센터</a></li>
+          <li><a href="#">수수료 안내</a></li>
+          <li><a href="#">이용약관</a></li>
+          <li><a href="#">개인정보 처리방침</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h3>창작자</h3>
+        <ul>
+          <li><a href="#">프로젝트 올리기</a></li>
+          <li><a href="#">창작자센터</a></li>
+          <li><a href="#">심사 기준</a></li>
+          <li><a href="#">성공 사례</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h3>팔로우</h3>
+        <ul>
+          <li><a href="#">인스타그램</a></li>
+          <li><a href="#">유튜브</a></li>
+          <li><a href="#">X</a></li>
+          <li><a href="#">뉴스레터 구독</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="legal-band">
+      <p>텀블벅 클론 데모 · 대표 홍길동 · 서울특별시 종로구 창작로 12, 3층</p>
+      <p>사업자등록번호 000-00-00000 · 통신판매업신고 제2026-서울종로-0000호 · 개인정보보호책임자 홍길동</p>
+      <p>텀블벅은 통신판매중개자이며 통신판매의 당사자가 아닙니다. 프로젝트에 대한 책임은 각 창작자에게 있습니다.</p>
+      <p>© 2026 Tumblbug Clone Demo. 디자인 학습 목적의 재현물입니다.</p>
+    </div>
+  </div>
+</footer>
+
+<script>
+(function(){
+  var reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+  /* ---------- Hero carousel ---------- */
+  var slides = Array.prototype.slice.call(document.querySelectorAll('[data-slide]'));
+  var indexEl = document.getElementById('heroIndex');
+  var i = 0, timer = null;
+
+  function show(next){
+    i = (next + slides.length) % slides.length;
+    slides.forEach(function(s, n){ s.classList.toggle('is-active', n === i); });
+    indexEl.textContent = i + 1;
+  }
+  function start(){
+    if (reduce) return;
+    stop();
+    timer = setInterval(function(){ show(i + 1); }, 6000);
+  }
+  function stop(){ if (timer) clearInterval(timer); timer = null; }
+
+  document.querySelector('[data-hero="prev"]').addEventListener('click', function(){ show(i - 1); start(); });
+  document.querySelector('[data-hero="next"]').addEventListener('click', function(){ show(i + 1); start(); });
+
+  var hero = document.querySelector('.hero');
+  hero.addEventListener('mouseenter', stop);
+  hero.addEventListener('mouseleave', start);
+
+  /* 모바일 스와이프 */
+  var x0 = null;
+  hero.addEventListener('touchstart', function(e){ x0 = e.changedTouches[0].clientX; }, {passive:true});
+  hero.addEventListener('touchend', function(e){
+    if (x0 === null) return;
+    var dx = e.changedTouches[0].clientX - x0;
+    if (Math.abs(dx) > 40) show(dx < 0 ? i + 1 : i - 1);
+    x0 = null;
+  }, {passive:true});
+
+  start();
+
+  /* ---------- Heart toggle ---------- */
+  document.querySelectorAll('.icon-button-heart').forEach(function(btn){
+    btn.addEventListener('click', function(e){
+      e.preventDefault();
+      var on = btn.getAttribute('aria-pressed') === 'true';
+      btn.setAttribute('aria-pressed', String(!on));
+      if (!on && !reduce){
+        btn.classList.add('pop');
+        setTimeout(function(){ btn.classList.remove('pop'); }, 140);
+      }
+    });
+  });
+
+  /* ---------- Nav active state ---------- */
+  document.querySelectorAll('.nav-tab[href]').forEach(function(tab){
+    tab.addEventListener('click', function(e){
+      e.preventDefault();
+      document.querySelectorAll('.nav-tab[href]').forEach(function(t){ t.removeAttribute('aria-current'); });
+      tab.setAttribute('aria-current', 'page');
+    });
+  });
+})();
+</script>
+</body>
+</html>
