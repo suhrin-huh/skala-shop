@@ -1,0 +1,160 @@
+.project-detail-page {
+  padding-top: var(--spacing-xl);
+  padding-bottom: var(--spacing-section);
+}
+
+.detail-header-section {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  margin-bottom: var(--spacing-xl);
+}
+
+.category-tag {
+  font-size: 14px;
+  color: var(--color-muted);
+  margin-bottom: var(--spacing-xs);
+}
+
+.detail-title {
+  font-size: 32px;
+  font-weight: 800;
+  color: var(--color-ink);
+  max-width: 800px;
+  margin-bottom: var(--spacing-md);
+}
+
+.creator-profile {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-sm);
+}
+
+.creator-nickname {
+  font-size: 15px;
+  font-weight: 600;
+  color: var(--color-ink);
+}
+
+.detail-hero-grid {
+  display: grid;
+  grid-template-columns: 1fr 380px;
+  gap: var(--spacing-xxl);
+  margin-bottom: var(--spacing-section);
+}
+
+.detail-main-image-box {
+  width: 100%;
+  aspect-ratio: 16 / 10;
+  border-radius: var(--rounded-md);
+  overflow: hidden;
+  background-color: var(--color-surface-soft);
+}
+
+.detail-main-img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.detail-summary-card {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-lg);
+  padding: var(--spacing-xl);
+  border: 1px solid var(--color-hairline);
+  border-radius: var(--rounded-md);
+  background-color: var(--color-canvas);
+}
+
+.metric-item {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.metric-label {
+  font-size: 14px;
+  color: var(--color-muted);
+}
+
+.metric-value-row {
+  display: flex;
+  align-items: baseline;
+  gap: 4px;
+}
+
+.metric-val {
+  font-size: 28px;
+  font-weight: 800;
+  color: var(--color-ink);
+}
+
+.metric-val.primary {
+  color: var(--color-primary);
+}
+
+.metric-unit {
+  font-size: 16px;
+  font-weight: 600;
+}
+
+.metric-percent {
+  font-size: 20px;
+  font-weight: 800;
+  color: var(--color-primary);
+  margin-left: 8px;
+}
+
+.pledge-notice-card {
+  background-color: var(--color-surface-soft);
+  padding: var(--spacing-base);
+  border-radius: var(--rounded-sm-lg);
+  font-size: 13px;
+  color: var(--color-body);
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.notice-sub {
+  color: var(--color-muted);
+  font-size: 12px;
+  margin-top: 4px;
+}
+
+.pledge-cta-btn {
+  width: 100%;
+  font-size: 17px;
+  font-weight: 700;
+}
+
+.creator-actions {
+  display: flex;
+  gap: var(--spacing-md);
+}
+
+.creator-actions .btn-outline-pill {
+  flex: 1;
+}
+
+.detail-description-section {
+  border-top: 1px solid var(--color-hairline);
+  padding-top: var(--spacing-section);
+  max-width: 800px;
+}
+
+.section-sub-title {
+  font-size: 22px;
+  font-weight: 700;
+  color: var(--color-ink);
+  margin-bottom: var(--spacing-lg);
+}
+
+.description-body {
+  font-size: 16px;
+  line-height: 1.8;
+  color: var(--color-body);
+  white-space: pre-line;
+}

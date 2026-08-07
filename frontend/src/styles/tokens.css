@@ -1,0 +1,108 @@
+:root {
+  /* Colors - Brand & Accent */
+  --color-primary: #ff5757;
+  --color-primary-strong: #e84545;
+  --color-primary-soft: #ffeced;
+  --color-primary-disabled: #ffc9c9;
+  --color-violet: #7a4df5;
+
+  /* Surface */
+  --color-canvas: #ffffff;
+  --color-surface-soft: #f5f5f5;
+  --color-surface-strong: #ebebeb;
+
+  /* Hairlines & Borders */
+  --color-hairline: #e5e5e5;
+  --color-hairline-soft: #f0f0f0;
+  --color-border-strong: #d4d4d4;
+
+  /* Text */
+  --color-ink: #212124;
+  --color-body: #3d3d3d;
+  --color-muted: #77777a;
+  --color-muted-soft: #a5a5a8;
+  --color-on-primary: #ffffff;
+
+  /* Semantic */
+  --color-success: #2ba471;
+  --color-warning: #f5a623;
+  --color-error: #d92d20;
+  --color-ad-label: #a5a5a8;
+
+  /* Scrim */
+  --color-scrim: rgba(0, 0, 0, 0.55);
+  --color-scrim-hero: linear-gradient(90deg, rgba(0, 0, 0, 0.72) 0%, rgba(0, 0, 0, 0) 62%);
+
+  /* Typography */
+  --font-family: "Pretendard Variable", Pretendard, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+
+  /* Typography Scale — design-sheet.md 의 위계표와 1:1 대응한다.
+     한글 UI 특성상 자간은 전 스케일에서 음수로 조인다. */
+  --font-hero-title: 800 40px/1.32 var(--font-family);
+  --tracking-hero-title: -1px;
+  --font-hero-sub: 600 17px/1.5 var(--font-family);
+  --font-section-title: 700 22px/1.36 var(--font-family);
+  --tracking-section-title: -0.5px;
+  --font-nav-link: 600 17px/1.4 var(--font-family);
+  --font-util-link: 700 15px/1.4 var(--font-family);
+  --font-percent: 800 17px/1.3 var(--font-family);
+  --tracking-percent: -0.4px;
+  --font-card-title: 600 15px/1.45 var(--font-family);
+  --font-card-title-lg: 600 16px/1.45 var(--font-family);
+  --font-creator: 400 13px/1.4 var(--font-family);
+  --font-body-md: 400 15px/1.6 var(--font-family);
+  --font-body-sm: 400 14px/1.5 var(--font-family);
+  --font-badge: 600 12px/1.2 var(--font-family);
+  --font-caption: 400 13px/1.4 var(--font-family);
+  --font-legal: 400 12px/1.6 var(--font-family);
+  --font-micro-n: 700 10px/1 var(--font-family);
+  --font-rank: 700 13px/1 var(--font-family);
+  --font-button-md: 600 15px/1.2 var(--font-family);
+  --tracking-tight: -0.3px;
+  --tracking-loose: -0.2px;
+
+  /* Rounded Borders */
+  --rounded-sm: 6px;
+  --rounded-sm-lg: 10px;
+  --rounded-md: 12px;
+  --rounded-lg: 22px;
+  --rounded-full: 9999px;
+
+  /* Elevation */
+  --elevation-floating: 0 2px 8px rgba(0, 0, 0, 0.08);
+  --elevation-overlay-control: rgba(0, 0, 0, 0.35);
+
+  /* Spacing */
+  --spacing-xxs: 2px;
+  --spacing-xs: 4px;
+  --spacing-sm: 8px;
+  --spacing-md: 12px;
+  --spacing-base: 16px;
+  --spacing-lg: 24px;
+  --spacing-xl: 32px;
+  --spacing-xxl: 40px;
+  --spacing-section: 56px;
+
+  /* Layout */
+  --max-content-width: 1240px;
+  --sidebar-width: 356px;
+  --grid-gutter: var(--spacing-lg);
+
+  /* Motion */
+  --ease-standard: cubic-bezier(0.2, 0, 0, 1);
+  --duration-base: 200ms;
+  --duration-hover: 180ms;
+  --duration-heart: 140ms;
+  --duration-carousel: 480ms;
+  --carousel-interval: 6s;
+}
+
+/* 접근성: 모션 민감 사용자에게는 자동 캐러셀과 전환을 모두 끈다. */
+@media (prefers-reduced-motion: reduce) {
+  :root {
+    --duration-base: 0ms;
+    --duration-hover: 0ms;
+    --duration-heart: 0ms;
+    --duration-carousel: 0ms;
+  }
+}

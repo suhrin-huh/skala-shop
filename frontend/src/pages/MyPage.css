@@ -1,0 +1,146 @@
+.mypage {
+  padding-top: var(--spacing-xl);
+  padding-bottom: var(--spacing-section);
+}
+
+.mypage-profile-card {
+  background-color: var(--color-surface-soft);
+  border-radius: var(--rounded-md);
+  padding: var(--spacing-xl);
+  margin-bottom: var(--spacing-xl);
+}
+
+.user-info-header {
+  margin-bottom: var(--spacing-lg);
+}
+
+.user-nickname {
+  font-size: 24px;
+  font-weight: 800;
+  color: var(--color-ink);
+}
+
+.user-email {
+  font-size: 14px;
+  color: var(--color-muted);
+}
+
+.point-trio-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: var(--spacing-md);
+}
+
+.point-trio-item {
+  background-color: var(--color-canvas);
+  border-radius: var(--rounded-sm-lg);
+  padding: var(--spacing-base);
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.point-trio-item .label {
+  font-size: 13px;
+  color: var(--color-muted);
+}
+
+.point-trio-item .val {
+  font-size: 20px;
+  font-weight: 700;
+  color: var(--color-ink);
+}
+
+.point-trio-item.highlight {
+  border: 1px solid var(--color-primary-soft);
+}
+
+.point-trio-item .val.available {
+  color: var(--color-primary);
+  font-weight: 800;
+}
+
+.mypage-tabs {
+  display: flex;
+  gap: var(--spacing-lg);
+  border-bottom: 1px solid var(--color-hairline);
+  margin-bottom: var(--spacing-xl);
+}
+
+.tab-btn {
+  font-size: 17px;
+  font-weight: 600;
+  color: var(--color-muted);
+  padding-bottom: var(--spacing-sm);
+  position: relative;
+}
+
+.tab-btn.active {
+  color: var(--color-ink);
+  font-weight: 700;
+}
+
+.tab-btn.active::after {
+  content: '';
+  position: absolute;
+  bottom: -1px;
+  left: 0;
+  width: 100%;
+  height: 3px;
+  background-color: var(--color-ink);
+}
+
+.pledges-list, .my-projects-list {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-base);
+}
+
+.pledge-item-card {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: var(--spacing-lg);
+  border: 1px solid var(--color-hairline);
+  border-radius: var(--rounded-sm-lg);
+}
+
+.pledge-project-title {
+  font-size: 16px;
+  font-weight: 700;
+  color: var(--color-ink);
+}
+
+.pledge-amount {
+  font-size: 14px;
+  color: var(--color-muted);
+}
+
+.pledge-status-col {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-md);
+}
+
+.pledge-badge {
+  font-size: 14px;
+  font-weight: 600;
+}
+
+.pledge-badge.pledged {
+  color: var(--color-primary);
+}
+
+.pledge-badge.confirmed {
+  color: var(--color-success);
+}
+
+.pledge-badge.cancelled, .pledge-badge.failed {
+  color: var(--color-muted);
+}
+
+.empty-state {
+  padding: var(--spacing-section) 0;
+  text-align: center;
+  color: var(--color-muted);
+}
