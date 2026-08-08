@@ -58,6 +58,13 @@ public class ProjectController {
         return ApiResponse.success(projectService.findPopular(customerId));
     }
 
+    @Operation(summary = "홈 배너용 최근 프로젝트 3개", description = "등록일 내림차순 상위 3개")
+    @GetMapping("/banners")
+    public ApiResponse<List<ProjectDtos.ProjectResponse>> banners(
+            @AuthenticationPrincipal Long customerId) {
+        return ApiResponse.success(projectService.findRecent(customerId));
+    }
+
     @Operation(summary = "프로젝트 상세", description = "삭제된 프로젝트는 404 로 응답한다.")
     @GetMapping("/{id}")
     public ApiResponse<ProjectDtos.ProjectResponse> detail(@PathVariable Long id,

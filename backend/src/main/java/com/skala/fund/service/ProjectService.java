@@ -32,6 +32,7 @@ import java.util.Set;
 public class ProjectService {
 
     private static final int POPULAR_SIZE = 5;
+    private static final int RECENT_SIZE = 3;
     private static final int MIN_FUNDING_DAYS = 7;
 
     private final ProjectRepository projectRepository;
@@ -54,6 +55,13 @@ public class ProjectService {
     @Transactional(readOnly = true)
     public List<ProjectDtos.ProjectResponse> findPopular(Long viewerId) {
         List<Project> projects = projectRepository.findPopular(PageRequest.of(0, POPULAR_SIZE));
+        return toResponses(projects, viewerId);
+    }
+
+    /** 홈 배너용 최근 프로젝트 3개. 등록일 내림차순. */
+    @Transactional(readOnly = true)
+    public List<ProjectDtos.ProjectResponse> findRecent(Long viewerId) {
+        List<Project> projects = projectRepository.findRecent(PageRequest.of(0, RECENT_SIZE));
         return toResponses(projects, viewerId);
     }
 

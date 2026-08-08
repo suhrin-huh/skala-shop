@@ -46,6 +46,11 @@ public interface ProjectRepository extends JpaRepository<Project, Long> {
             + "WHERE p.deletedAt IS NULL ORDER BY p.currentAmount DESC")
     List<Project> findPopular(Pageable pageable);
 
+    /** 홈 배너용 최근 프로젝트 3개 — 등록일 내림차순. */
+    @Query("SELECT p FROM Project p JOIN FETCH p.creator JOIN FETCH p.category "
+            + "WHERE p.deletedAt IS NULL ORDER BY p.createdAt DESC")
+    List<Project> findRecent(Pageable pageable);
+
     @Query(value = "SELECT p FROM Project p JOIN FETCH p.creator JOIN FETCH p.category "
             + "WHERE p.creator = :creator AND p.deletedAt IS NULL",
             countQuery = "SELECT COUNT(p) FROM Project p WHERE p.creator = :creator AND p.deletedAt IS NULL")
