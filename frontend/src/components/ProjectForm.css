@@ -66,6 +66,19 @@
   width: auto;
   flex: 1;
   margin-top: 0;
+  background-color: transparent;
+  color: var(--color-ink);
+  border: 1px solid var(--color-border-strong);
+}
+
+.project-form-actions-row .project-form-submit:hover {
+  background-color: var(--color-surface-soft);
+}
+
+.project-form-actions-row .project-form-submit:disabled {
+  background-color: transparent;
+  color: var(--color-muted-soft);
+  border-color: var(--color-hairline);
 }
 
 .project-form-delete {

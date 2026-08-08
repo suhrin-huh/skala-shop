@@ -158,7 +158,7 @@ export default function ProjectEditPage() {
               </Link>
               <button
                 type="button"
-                className="btn-outline-pill"
+                className="btn-danger"
                 onClick={() => setShowDeleteConfirm(true)}
               >
                 프로젝트 삭제

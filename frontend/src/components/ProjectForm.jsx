@@ -235,7 +235,7 @@ export default function ProjectForm({
           {submitButton}
           <button
             type="button"
-            className="btn-outline-pill project-form-delete"
+            className="btn-danger project-form-delete"
             onClick={onDeleteClick}
             disabled={submitting}
           >
