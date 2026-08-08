@@ -38,26 +38,21 @@ RUN apt-get update \
     && rm -rf /var/lib/apt/lists/*
 
 ENV TZ=Asia/Seoul
-ENV SPRING_PROFILES_ACTIVE=prod
+ENV SPRING_PROFILES_ACTIVE=dev
 # 컨테이너 메모리 한도를 힙 계산에 반영한다.
 ENV JAVA_OPTS="-XX:MaxRAMPercentage=75.0 -Duser.timezone=Asia/Seoul -Dfile.encoding=UTF-8"
 
 # root 로 돌리지 않는다.
 RUN groupadd --system skala && useradd --system --gid skala --create-home skala
 WORKDIR /app
-
-# 로컬 통합 환경(docker-compose.local.yml)이 여기에 볼륨을 붙인다.
-# 디렉터리를 미리 만들어 두지 않으면 Docker 가 root 소유로 생성해 skala 유저가 쓰지 못한다.
-RUN mkdir -p /app/uploads && chown -R skala:skala /app
+RUN chown -R skala:skala /app
 
 COPY --from=build --chown=skala:skala /workspace/build/libs/*.jar app.jar
 
 USER skala
 EXPOSE 8080
 
-# 컨테이너 헬스체크. 배포 스크립트(scripts/deploy.sh)도 같은 엔드포인트를 폴링한다.
-# start-period 를 넉넉히 잡는 이유: 첫 기동에서 Flyway 마이그레이션이 먼저 돌기 때문이다.
-HEALTHCHECK --interval=10s --timeout=3s --start-period=60s --retries=5 \
+HEALTHCHECK --interval=10s --timeout=3s --start-period=30s --retries=5 \
     CMD curl -fsS http://localhost:8080/actuator/health || exit 1
 
 ENTRYPOINT ["sh", "-c", "exec java $JAVA_OPTS -jar /app/app.jar"]
