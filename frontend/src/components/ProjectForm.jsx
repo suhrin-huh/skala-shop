@@ -1,7 +1,10 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { FiAlertCircle, FiAlertTriangle } from 'react-icons/fi';
 import api from '../api/client';
+import ImageCropModal from './ImageCropModal';
 import './ProjectForm.css';
+
+const ACCEPTED_IMAGE_TYPES = 'image/jpeg,image/png,image/webp';
 
 export const DEFAULT_MAIN_IMAGE =
   'https://images.unsplash.com/photo-1587829741301-dc798b83add3?auto=format&fit=crop&w=800&q=80';
@@ -75,6 +78,8 @@ export default function ProjectForm({
   const [categories, setCategories] = useState([]);
   const [values, setValues] = useState(() => initialValues || buildDefaults());
   const [localError, setLocalError] = useState('');
+  const [pendingImageSrc, setPendingImageSrc] = useState(null);
+  const fileInputRef = useRef(null);
 
   useEffect(() => {
     let cancelled = false;
@@ -108,6 +113,23 @@ export default function ProjectForm({
     setValues((prev) => ({ ...prev, [name]: value }));
   };
 
+  const handleFileSelect = (e) => {
+    const file = e.target.files?.[0];
+    e.target.value = ''; // 같은 파일을 다시 선택해도 onChange 가 뜨도록 리셋한다.
+    if (!file) return;
+    setPendingImageSrc(URL.createObjectURL(file));
+  };
+
+  const closeCropModal = () => {
+    if (pendingImageSrc) URL.revokeObjectURL(pendingImageSrc);
+    setPendingImageSrc(null);
+  };
+
+  const handleCropUploaded = (url) => {
+    setValues((prev) => ({ ...prev, mainImage: url }));
+    closeCropModal();
+  };
+
   const handleSubmit = (e) => {
     e.preventDefault();
 
@@ -135,6 +157,7 @@ export default function ProjectForm({
   );
 
   return (
+    <>
     <form onSubmit={handleSubmit} className="project-form" noValidate>
       {warning && (
         <div className="project-form-warning" role="alert">
@@ -197,17 +220,30 @@ export default function ProjectForm({
       </div>
 
       <div className="form-group">
-        <label htmlFor="project-image">대표 이미지 URL</label>
+        <label htmlFor="project-image">대표 이미지</label>
         <input
           id="project-image"
-          type="url"
-          placeholder="https://example.com/image.jpg"
-          value={values.mainImage}
-          onChange={setField('mainImage')}
+          type="file"
+          accept={ACCEPTED_IMAGE_TYPES}
+          ref={fileInputRef}
+          onChange={handleFileSelect}
+          hidden
         />
-        {values.mainImage && (
+        <button
+          type="button"
+          className="btn-outline-pill"
+          onClick={() => fileInputRef.current?.click()}
+        >
+          {values.mainImage ? '이미지 다시 선택' : '대표 이미지 선택'}
+        </button>
+        <span className="form-hint">16:10 비율로 잘라서 업로드합니다. (jpg/png/webp)</span>
+        {values.mainImage ? (
           <div className="project-form-preview">
             <img src={values.mainImage} alt="대표 이미지 미리보기" />
+          </div>
+        ) : (
+          <div className="project-form-preview project-form-preview-empty">
+            <span>선택된 이미지가 없습니다</span>
           </div>
         )}
       </div>
@@ -246,5 +282,14 @@ export default function ProjectForm({
         submitButton
       )}
     </form>
+
+    {pendingImageSrc && (
+      <ImageCropModal
+        imageSrc={pendingImageSrc}
+        onCancel={closeCropModal}
+        onUploaded={handleCropUploaded}
+      />
+    )}
+    </>
   );
 }
