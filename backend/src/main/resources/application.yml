@@ -4,8 +4,21 @@ spring:
   jackson:
     serialization:
       write-dates-as-timestamps: false
+  servlet:
+    multipart:
+      max-file-size: 8MB
+      max-request-size: 10MB
+  cloud:
+    aws:
+      region:
+        static: ${AWS_REGION:us-east-1}
 
 jwt:
-  secret: c2thbGEtZnVuZC1zZWNyZXQta2V5LXN1cGVyLXNlY3VyZS0yNTYtYml0LWhhc2gta2V5LXRlc3Q=
+  # 로컬 실행(.env 없이 ./gradlew bootRun)을 위한 기본값. docker-compose 는 .env 의 JWT_SECRET 으로 덮어쓴다.
+  secret: ${JWT_SECRET:c2thbGEtZnVuZC1zZWNyZXQta2V5LXN1cGVyLXNlY3VyZS0yNTYtYml0LWhhc2gta2V5LXRlc3Q=}
   access-token-expiration-ms: 259200000 # 3 days
   refresh-token-expiration-ms: 1209600000 # 14 days
+
+app:
+  storage:
+    s3-bucket: ${AWS_S3_BUCKET}

@@ -46,6 +46,7 @@ public enum ErrorCode {
     INVALID_FILE_TYPE(HttpStatus.BAD_REQUEST, "FILE_001", "jpg, png, webp 이미지만 업로드할 수 있습니다."),
     FILE_UPLOAD_FAILED(HttpStatus.INTERNAL_SERVER_ERROR, "FILE_002", "이미지 업로드에 실패했습니다."),
     EMPTY_FILE(HttpStatus.BAD_REQUEST, "FILE_003", "업로드할 파일이 비어 있습니다."),
+    FILE_TOO_LARGE(HttpStatus.BAD_REQUEST, "FILE_004", "업로드 가능한 파일 용량을 초과했습니다."),
 
     // Server
     INTERNAL_SERVER_ERROR(HttpStatus.INTERNAL_SERVER_ERROR, "SYS_001", "서버 내부 오류가 발생했습니다.");
