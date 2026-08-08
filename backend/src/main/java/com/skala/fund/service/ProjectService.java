@@ -24,6 +24,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDate;
 import java.util.List;
+import java.util.Set;
 
 @Slf4j
 @Service
@@ -40,32 +41,48 @@ public class ProjectService {
     private final ProjectLikeRepository projectLikeRepository;
 
     @Transactional(readOnly = true)
-    public Page<ProjectDtos.ProjectResponse> search(Long categoryId, String keyword, Pageable pageable) {
+    public Page<ProjectDtos.ProjectResponse> search(Long categoryId, String keyword, Long viewerId,
+                                                    Pageable pageable) {
         // 키워드는 여기서 공백 제거 + 소문자로 정규화한다. searchTitle 컬럼이 같은 규칙으로 저장돼 있다.
         String normalized = normalizeKeyword(keyword);
-        return projectRepository.searchProjects(categoryId, normalized, pageable)
-                .map(ProjectDtos.ProjectResponse::from);
+        Page<Project> page = projectRepository.searchProjects(categoryId, normalized, pageable);
+        Set<Long> liked = findLikedIds(viewerId, page.getContent());
+        return page.map(project -> ProjectDtos.ProjectResponse.from(project, liked.contains(project.getId())));
     }
 
     /** 인기 프로젝트 5개. 후원액 합계 내림차순. */
     @Transactional(readOnly = true)
-    public List<ProjectDtos.ProjectResponse> findPopular() {
-        return projectRepository.findPopular(PageRequest.of(0, POPULAR_SIZE))
-                .stream()
-                .map(ProjectDtos.ProjectResponse::from)
-                .toList();
+    public List<ProjectDtos.ProjectResponse> findPopular(Long viewerId) {
+        List<Project> projects = projectRepository.findPopular(PageRequest.of(0, POPULAR_SIZE));
+        return toResponses(projects, viewerId);
     }
 
     /** 최근 본 펀딩 일괄 조회. 없거나 삭제된 ID 는 조용히 빠진다. 404 로 전체를 실패시키지 않는다. */
     @Transactional(readOnly = true)
-    public List<ProjectDtos.ProjectResponse> findAllByIds(List<Long> ids) {
+    public List<ProjectDtos.ProjectResponse> findAllByIds(List<Long> ids, Long viewerId) {
         if (ids == null || ids.isEmpty()) {
             return List.of();
         }
-        return projectRepository.findAllByIds(ids)
-                .stream()
-                .map(ProjectDtos.ProjectResponse::from)
+        return toResponses(projectRepository.findAllByIds(ids), viewerId);
+    }
+
+    private List<ProjectDtos.ProjectResponse> toResponses(List<Project> projects, Long viewerId) {
+        Set<Long> liked = findLikedIds(viewerId, projects);
+        return projects.stream()
+                .map(project -> ProjectDtos.ProjectResponse.from(project, liked.contains(project.getId())))
                 .toList();
+    }
+
+    /**
+     * 목록에 실린 프로젝트들의 찜 여부를 한 번의 쿼리로 받아온다.
+     * 카드마다 exists 를 날리면 N+1 이 된다. 비로그인 요청은 쿼리 없이 빈 집합이다.
+     */
+    private Set<Long> findLikedIds(Long viewerId, List<Project> projects) {
+        if (viewerId == null || projects.isEmpty()) {
+            return Set.of();
+        }
+        List<Long> projectIds = projects.stream().map(Project::getId).toList();
+        return Set.copyOf(projectLikeRepository.findLikedProjectIds(viewerId, projectIds));
     }
 
     /** 상세. 삭제된 프로젝트는 404 다. */

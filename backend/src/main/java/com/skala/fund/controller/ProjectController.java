@@ -41,19 +41,21 @@ public class ProjectController {
             @RequestParam(required = false) Long categoryId,
             @RequestParam(required = false) String keyword,
             @RequestParam(required = false) List<Long> ids,
+            @AuthenticationPrincipal Long customerId,
             @PageableDefault(size = 12, sort = "createdAt", direction = Sort.Direction.DESC) Pageable pageable) {
 
         if (ids != null && !ids.isEmpty()) {
-            return ApiResponse.success(projectService.findAllByIds(ids));
+            return ApiResponse.success(projectService.findAllByIds(ids, customerId));
         }
-        Page<ProjectDtos.ProjectResponse> page = projectService.search(categoryId, keyword, pageable);
+        Page<ProjectDtos.ProjectResponse> page = projectService.search(categoryId, keyword, customerId, pageable);
         return ApiResponse.success(page);
     }
 
     @Operation(summary = "인기 프로젝트 5개", description = "후원액 합계 내림차순 상위 5개")
     @GetMapping("/popular")
-    public ApiResponse<List<ProjectDtos.ProjectResponse>> popular() {
-        return ApiResponse.success(projectService.findPopular());
+    public ApiResponse<List<ProjectDtos.ProjectResponse>> popular(
+            @AuthenticationPrincipal Long customerId) {
+        return ApiResponse.success(projectService.findPopular(customerId));
     }
 
     @Operation(summary = "프로젝트 상세", description = "삭제된 프로젝트는 404 로 응답한다.")
