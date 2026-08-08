@@ -3,13 +3,13 @@ package com.skala.fund.service;
 import com.skala.fund.common.exception.CustomException;
 import com.skala.fund.common.exception.ErrorCode;
 import io.awspring.cloud.s3.ObjectMetadata;
+import io.awspring.cloud.s3.S3Exception;
 import io.awspring.cloud.s3.S3Template;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 import org.springframework.web.multipart.MultipartFile;
-import software.amazon.awssdk.core.exception.SdkException;
 
 import java.io.IOException;
 import java.util.List;
@@ -61,7 +61,7 @@ public class S3FileStorageService implements FileStorageService {
                     .contentType(CONTENT_TYPES.get(extension))
                     .build();
             s3Template.upload(bucket, key, input, metadata);
-        } catch (IOException | SdkException e) {
+        } catch (IOException | S3Exception e) {
             log.error("S3 이미지 업로드 실패 - key={}, originalName={}", key, file.getOriginalFilename(), e);
             throw new CustomException(ErrorCode.FILE_UPLOAD_FAILED);
         }
