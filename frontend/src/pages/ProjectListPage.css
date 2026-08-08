@@ -1,0 +1,194 @@
+.project-list-page {
+  padding-top: var(--spacing-lg);
+  padding-bottom: var(--spacing-section);
+}
+
+.project-list-header {
+  margin-bottom: var(--spacing-lg);
+}
+
+.project-list-title {
+  font: var(--font-section-title);
+  letter-spacing: var(--tracking-section-title);
+  color: var(--color-ink);
+}
+
+.project-list-count {
+  margin-top: var(--spacing-xs);
+  font: var(--font-caption);
+  color: var(--color-muted);
+}
+
+/* 검색창 — 디자인 시트의 search-field 규격(사각 라운드, 테두리 없음, 포커스 시에만 1px 잉크) */
+.project-list-search {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-sm);
+  height: 48px;
+  padding: 0 var(--spacing-base);
+  margin-bottom: var(--spacing-base);
+  background-color: var(--color-surface-soft);
+  border: 1px solid transparent;
+  border-radius: var(--rounded-sm-lg);
+  transition: border-color var(--duration-hover) var(--ease-standard);
+}
+
+.project-list-search:focus-within {
+  border-color: var(--color-ink);
+}
+
+.project-list-search input {
+  flex: 1;
+  min-width: 0;
+  height: 100%;
+  border: none;
+  outline: none;
+  background: transparent;
+  color: var(--color-ink);
+  font-size: 15px;
+}
+
+.project-list-search input::placeholder {
+  color: var(--color-muted-soft);
+}
+
+.project-list-search button {
+  display: flex;
+  align-items: center;
+  color: var(--color-muted);
+  font-size: 18px;
+}
+
+.project-list-search-clear {
+  color: var(--color-muted-soft);
+}
+
+/* 카테고리 필터 — 좁은 화면에서 줄바꿈하지 않고 가로 스크롤 */
+.project-list-filters {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--spacing-base);
+  margin-bottom: var(--spacing-lg);
+  padding-bottom: var(--spacing-base);
+  border-bottom: 1px solid var(--color-hairline);
+}
+
+.category-chip-strip {
+  display: flex;
+  gap: var(--spacing-sm);
+  overflow-x: auto;
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+  flex: 1;
+  min-width: 0;
+}
+
+.category-chip-strip::-webkit-scrollbar {
+  display: none;
+}
+
+.category-chip {
+  flex-shrink: 0;
+  height: 36px;
+  padding: 0 var(--spacing-base);
+  border: 1px solid var(--color-hairline);
+  border-radius: var(--rounded-full);
+  background-color: var(--color-canvas);
+  color: var(--color-body);
+  font: var(--font-body-sm);
+  white-space: nowrap;
+  transition: background-color var(--duration-hover) var(--ease-standard);
+}
+
+.category-chip:hover {
+  background-color: var(--color-surface-soft);
+}
+
+.category-chip.active {
+  background-color: var(--color-ink);
+  border-color: var(--color-ink);
+  color: var(--color-on-primary);
+  font-weight: 600;
+}
+
+.project-list-sort {
+  flex-shrink: 0;
+  height: 36px;
+  padding: 0 var(--spacing-md);
+  border: 1px solid var(--color-border-strong);
+  border-radius: var(--rounded-sm);
+  background-color: var(--color-canvas);
+  color: var(--color-ink);
+  font: var(--font-body-sm);
+  outline: none;
+}
+
+.project-list-sort:focus {
+  border-color: var(--color-ink);
+}
+
+/* 그리드 — 열 수만 줄이고 행 리플로우는 하지 않는다. */
+.project-list-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: var(--grid-gutter);
+}
+
+/* Pagination */
+.pagination {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--spacing-xs);
+  margin-top: var(--spacing-xl);
+}
+
+.pagination-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 40px;
+  height: 40px;
+  padding: 0 var(--spacing-sm);
+  border-radius: var(--rounded-sm);
+  color: var(--color-body);
+  font: var(--font-body-sm);
+  transition: background-color var(--duration-hover) var(--ease-standard);
+}
+
+.pagination-btn:hover:not(:disabled) {
+  background-color: var(--color-surface-soft);
+}
+
+.pagination-btn:disabled {
+  color: var(--color-muted-soft);
+  cursor: not-allowed;
+}
+
+.pagination-btn.active {
+  background-color: var(--color-ink);
+  color: var(--color-on-primary);
+  font-weight: 700;
+}
+
+@media (max-width: 1128px) {
+  .project-list-grid {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+
+@media (max-width: 744px) {
+  .project-list-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .project-list-filters {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .project-list-sort {
+    align-self: flex-end;
+  }
+}

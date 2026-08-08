@@ -1,7 +1,7 @@
 .project-card {
   display: flex;
   flex-direction: column;
-  transition: transform 0.18s ease;
+  transition: transform var(--duration-hover) var(--ease-standard);
 }
 
 .project-card:hover {
@@ -37,9 +37,8 @@
   width: 28px;
   height: 28px;
   background-color: var(--color-primary);
-  color: #fff;
-  font-size: 14px;
-  font-weight: 700;
+  color: var(--color-on-primary);
+  font: var(--font-rank);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -55,12 +54,12 @@
   width: 32px;
   height: 32px;
   border-radius: var(--rounded-full);
-  background-color: rgba(255, 255, 255, 0.9);
+  background-color: var(--color-canvas);
   box-shadow: var(--elevation-floating);
   display: flex;
   align-items: center;
   justify-content: center;
-  transition: transform 0.14s ease;
+  transition: transform var(--duration-heart) var(--ease-standard);
   z-index: 2;
 }
 
@@ -87,15 +86,13 @@
 }
 
 .creator-name {
-  font-size: 13px;
+  font: var(--font-creator);
   color: var(--color-muted);
 }
 
 .card-title {
-  font-size: 15px;
-  font-weight: 600;
+  font: var(--font-card-title);
   color: var(--color-ink);
-  line-height: 1.45;
   display: -webkit-box;
   -webkit-line-clamp: 2;
   -webkit-box-orient: vertical;
@@ -103,11 +100,15 @@
   height: 44px;
 }
 
+/* 뱃지가 늘어나도 줄바꿈하지 않는다. 카드 높이가 흔들리면 스켈레톤과 어긋난다. */
 .badge-row {
   display: flex;
   align-items: center;
-  gap: 6px;
-  margin-top: 2px;
+  gap: var(--spacing-xs);
+  margin-top: var(--spacing-xxs);
+  height: 24px;
+  flex-wrap: nowrap;
+  overflow: hidden;
 }
 
 .card-metrics {
@@ -118,13 +119,13 @@
 }
 
 .percent-text {
-  font-size: 17px;
-  font-weight: 800;
+  font: var(--font-percent);
+  letter-spacing: var(--tracking-percent);
   color: var(--color-primary);
 }
 
 .current-amount {
-  font-size: 14px;
+  font: var(--font-body-sm);
   color: var(--color-muted);
 }
 

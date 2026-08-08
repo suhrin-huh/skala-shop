@@ -1,0 +1,67 @@
+.project-form {
+  background-color: var(--color-canvas);
+  border: 1px solid var(--color-hairline);
+  border-radius: var(--rounded-md);
+  padding: var(--spacing-xxl);
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-lg);
+}
+
+.project-form-row-2col {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: var(--spacing-md);
+}
+
+/* 후원자가 있는 프로젝트를 수정할 때의 경고. 오류가 아니라 주의이므로 warning 톤. */
+.project-form-warning {
+  display: flex;
+  align-items: flex-start;
+  gap: var(--spacing-sm);
+  padding: var(--spacing-md) var(--spacing-base);
+  border: 1px solid var(--color-warning);
+  border-radius: var(--rounded-sm-lg);
+  font: var(--font-body-sm);
+  color: var(--color-body);
+  word-break: keep-all;
+}
+
+.project-form-warning-icon {
+  flex-shrink: 0;
+  display: flex;
+  margin-top: var(--spacing-xxs);
+  color: var(--color-warning);
+  font-size: 18px;
+}
+
+.project-form-preview {
+  width: 100%;
+  aspect-ratio: 4 / 3;
+  max-width: 240px;
+  border-radius: var(--rounded-md);
+  overflow: hidden;
+  background-color: var(--color-surface-soft);
+}
+
+.project-form-preview img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.project-form-submit {
+  width: 100%;
+  margin-top: var(--spacing-md);
+  font-size: 17px;
+}
+
+@media (max-width: 744px) {
+  .project-form {
+    padding: var(--spacing-lg);
+  }
+
+  .project-form-row-2col {
+    grid-template-columns: 1fr;
+  }
+}

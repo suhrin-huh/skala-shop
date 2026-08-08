@@ -12,9 +12,9 @@ export default function Header() {
 
   const handleSearch = (e) => {
     e.preventDefault();
-    if (keyword.trim()) {
-      navigate(`/projects?search=${encodeURIComponent(keyword.trim())}`);
-    }
+    // 프론트에서도 trim. 공백만 입력하면 전체 목록으로 보낸다.
+    const trimmed = keyword.trim();
+    navigate(trimmed ? `/projects?keyword=${encodeURIComponent(trimmed)}` : '/projects');
   };
 
   return (
@@ -83,11 +83,12 @@ export default function Header() {
               <Link to="/" onClick={() => setActiveTab('home')}>홈</Link>
             </li>
             <li className={`nav-tab-item ${activeTab === 'popular' ? 'active' : ''}`}>
-              <Link to="/projects?sort=popular" onClick={() => setActiveTab('popular')}>인기</Link>
+              {/* 정렬 값은 Spring 형식 그대로다. (sort=currentAmount,desc) */}
+              <Link to="/projects?sort=currentAmount%2Cdesc" onClick={() => setActiveTab('popular')}>인기</Link>
             </li>
             <li className={`nav-tab-item ${activeTab === 'new' ? 'active' : ''}`}>
               <span className="badge-n">N</span>
-              <Link to="/projects?sort=new" onClick={() => setActiveTab('new')}>신규</Link>
+              <Link to="/projects" onClick={() => setActiveTab('new')}>신규</Link>
             </li>
           </ul>
 

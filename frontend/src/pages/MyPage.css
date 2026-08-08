@@ -60,18 +60,33 @@
   font-weight: 800;
 }
 
+.point-trio-note {
+  margin-top: var(--spacing-md);
+  font: var(--font-caption);
+  color: var(--color-muted);
+}
+
+/* 탭은 좁은 화면에서 줄바꿈하지 않고 가로 스크롤한다. */
 .mypage-tabs {
   display: flex;
   gap: var(--spacing-lg);
   border-bottom: 1px solid var(--color-hairline);
   margin-bottom: var(--spacing-xl);
+  overflow-x: auto;
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+}
+
+.mypage-tabs::-webkit-scrollbar {
+  display: none;
 }
 
 .tab-btn {
-  font-size: 17px;
-  font-weight: 600;
+  flex-shrink: 0;
+  font: var(--font-nav-link);
   color: var(--color-muted);
   padding-bottom: var(--spacing-sm);
+  white-space: nowrap;
   position: relative;
 }
 
@@ -105,14 +120,38 @@
   border-radius: var(--rounded-sm-lg);
 }
 
+.pledge-main-info {
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-sm);
+}
+
 .pledge-project-title {
-  font-size: 16px;
+  display: block;
+  font: var(--font-card-title-lg);
   font-weight: 700;
   color: var(--color-ink);
 }
 
+a.pledge-project-title:hover {
+  text-decoration: underline;
+}
+
+/* 삭제된 프로젝트는 상세 링크가 없으므로 클릭 가능해 보이면 안 된다. */
+.pledge-project-title.deleted {
+  color: var(--color-muted);
+}
+
+.pledge-sub-row {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-sm);
+  flex-wrap: wrap;
+}
+
 .pledge-amount {
-  font-size: 14px;
+  font: var(--font-body-sm);
   color: var(--color-muted);
 }
 
@@ -120,11 +159,13 @@
   display: flex;
   align-items: center;
   gap: var(--spacing-md);
+  flex-shrink: 0;
 }
 
 .pledge-badge {
-  font-size: 14px;
+  font: var(--font-body-sm);
   font-weight: 600;
+  text-align: right;
 }
 
 .pledge-badge.pledged {
@@ -139,8 +180,87 @@
   color: var(--color-muted);
 }
 
-.empty-state {
-  padding: var(--spacing-section) 0;
-  text-align: center;
+/* 찜 목록 / 최근 본 항목은 카드 그리드로 보여준다. 열 수만 줄이고 행은 리플로우하지 않는다. */
+.mypage-project-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: var(--grid-gutter);
+}
+
+.mypage-list-toolbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--spacing-base);
+  margin-bottom: var(--spacing-base);
+}
+
+.mypage-list-hint {
+  font: var(--font-caption);
   color: var(--color-muted);
+}
+
+/* 내가 올린 프로젝트 목록 */
+.my-project-item {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-base);
+  padding: var(--spacing-base);
+  border: 1px solid var(--color-hairline);
+  border-radius: var(--rounded-sm-lg);
+}
+
+.my-project-item .thumb {
+  width: 96px;
+  height: 96px;
+  object-fit: cover;
+  border-radius: var(--rounded-sm-lg);
+  background-color: var(--color-surface-soft);
+  flex-shrink: 0;
+}
+
+.my-project-item .info {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-sm);
+  align-items: flex-start;
+}
+
+.my-project-title {
+  font: var(--font-card-title-lg);
+  font-weight: 700;
+  color: var(--color-ink);
+}
+
+.my-project-title:hover {
+  text-decoration: underline;
+}
+
+.my-project-meta {
+  font: var(--font-body-sm);
+  color: var(--color-muted);
+}
+
+@media (max-width: 1128px) {
+  .mypage-project-grid {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+
+@media (max-width: 744px) {
+  .mypage-project-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .point-trio-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .pledge-item-card {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: var(--spacing-md);
+  }
 }

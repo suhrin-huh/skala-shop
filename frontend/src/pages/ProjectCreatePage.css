@@ -1,54 +1,24 @@
-.project-create-page {
+/* 등록/수정 페이지 공용 셸. 폼 자체의 스타일은 ProjectForm.css 에 있다. */
+.project-form-page {
   padding-top: var(--spacing-xl);
   padding-bottom: var(--spacing-section);
   max-width: 680px;
 }
 
-.create-page-title {
-  font-size: 28px;
-  font-weight: 800;
-  color: var(--color-ink);
+.project-form-page-header {
   margin-bottom: var(--spacing-xl);
   text-align: center;
 }
 
-.create-form-card {
-  background-color: var(--color-canvas);
-  border: 1px solid var(--color-hairline);
-  border-radius: var(--rounded-md);
-  padding: var(--spacing-xxl);
-  display: flex;
-  flex-direction: column;
-  gap: var(--spacing-lg);
+.project-form-page-title {
+  font-size: 28px;
+  font-weight: 800;
+  color: var(--color-ink);
+  letter-spacing: var(--tracking-section-title);
 }
 
-.form-group select {
-  height: 48px;
-  padding: 0 var(--spacing-base);
-  border: 1px solid var(--color-border-strong);
-  border-radius: var(--rounded-sm-lg);
-  font-size: 15px;
-  outline: none;
-  background-color: var(--color-canvas);
-}
-
-.form-group textarea {
-  padding: var(--spacing-base);
-  border: 1px solid var(--color-border-strong);
-  border-radius: var(--rounded-sm-lg);
-  font-size: 15px;
-  outline: none;
-  resize: vertical;
-}
-
-.form-row-2col {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: var(--spacing-md);
-}
-
-.submit-btn {
-  width: 100%;
-  margin-top: var(--spacing-md);
-  font-size: 17px;
+.project-form-page-sub {
+  margin-top: var(--spacing-sm);
+  font: var(--font-body-sm);
+  color: var(--color-muted);
 }

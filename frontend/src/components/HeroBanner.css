@@ -28,7 +28,7 @@
   top: 50%;
   left: 48px;
   transform: translateY(-50%);
-  color: #ffffff;
+  color: var(--color-on-overlay);
   max-width: 560px;
   z-index: 2;
 }
@@ -46,7 +46,7 @@
   font-size: 17px;
   font-weight: 600;
   line-height: 1.5;
-  color: rgba(255, 255, 255, 0.9);
+  color: var(--color-on-overlay-soft);
 }
 
 .hero-controls {
@@ -62,12 +62,12 @@
 .hero-counter-pill {
   height: 36px;
   padding: 0 16px;
-  background-color: rgba(0, 0, 0, 0.45);
+  background-color: var(--color-overlay-counter);
   border-radius: var(--rounded-full);
   display: flex;
   align-items: center;
-  color: #fff;
-  font-size: 14px;
+  color: var(--color-on-overlay);
+  font: var(--font-body-sm);
 }
 
 .hero-counter-pill .current-idx {
@@ -75,7 +75,7 @@
 }
 
 .hero-counter-pill .total-idx {
-  color: rgba(255, 255, 255, 0.7);
+  color: var(--color-on-overlay-muted);
 }
 
 .hero-arrow-btn {
@@ -83,14 +83,14 @@
   height: 36px;
   border-radius: var(--rounded-full);
   background-color: var(--elevation-overlay-control);
-  color: #fff;
+  color: var(--color-on-overlay);
   display: flex;
   align-items: center;
   justify-content: center;
   font-size: 20px;
-  transition: background-color 0.15s ease;
+  transition: background-color var(--duration-hover) var(--ease-standard);
 }
 
 .hero-arrow-btn:hover {
-  background-color: rgba(0, 0, 0, 0.65);
+  background-color: var(--color-overlay-control-hover);
 }

@@ -66,9 +66,8 @@
   width: 24px;
   height: 24px;
   background-color: var(--color-primary);
-  color: #fff;
-  font-size: 13px;
-  font-weight: 700;
+  color: var(--color-on-primary);
+  font: var(--font-rank);
   display: flex;
   align-items: center;
   justify-content: center;

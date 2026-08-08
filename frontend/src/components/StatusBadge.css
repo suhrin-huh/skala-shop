@@ -1,0 +1,34 @@
+.status-badge {
+  display: inline-flex;
+  align-items: center;
+  flex-shrink: 0;
+  /* .badge-creator / .badge-meta 와 같은 24px. 카드 뱃지 행 높이를 고정하기 위함. */
+  height: 24px;
+  padding: 0 var(--spacing-sm);
+  border-radius: var(--rounded-sm);
+  font: var(--font-badge);
+  letter-spacing: var(--tracking-loose);
+  white-space: nowrap;
+}
+
+/* 기본(진행 중 / 예정)은 중립. 코랄을 쓰면 달성률의 전압이 죽는다. */
+.status-badge.neutral {
+  background-color: var(--color-surface-strong);
+  color: var(--color-body);
+}
+
+.status-badge.muted {
+  background-color: var(--color-surface-soft);
+  color: var(--color-muted);
+}
+
+.status-badge.success {
+  background-color: var(--color-surface-soft);
+  color: var(--color-success);
+}
+
+/* 마감 임박만 코랄 — "지금 모여야 한다"는 펀딩 성과 신호다. */
+.status-badge.urgent {
+  background-color: var(--color-primary-soft);
+  color: var(--color-primary);
+}

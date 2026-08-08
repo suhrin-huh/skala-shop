@@ -61,7 +61,7 @@
   align-items: center;
   padding: 0 var(--spacing-base);
   border: 1px solid transparent;
-  transition: border-color 0.15s ease;
+  transition: border-color var(--duration-hover) var(--ease-standard);
 }
 
 .search-field:focus-within {

@@ -1,22 +1,63 @@
-import React, { useState } from 'react';
-import { Link } from 'react-router-dom';
+import React, { useEffect, useState } from 'react';
+import { Link, useNavigate } from 'react-router-dom';
 import { FiHeart } from 'react-icons/fi';
 import { FaHeart } from 'react-icons/fa';
+import api from '../api/client';
+import { useAuth } from '../contexts/AuthContext';
+import { useToast, extractApiMessage, extractApiCode } from '../contexts/ToastContext';
+import StatusBadge from './StatusBadge';
 import './ProjectCard.css';
 
 export default function ProjectCard({ project, rank }) {
-  const [liked, setLiked] = useState(false);
+  const { user } = useAuth();
+  const toast = useToast();
+  const navigate = useNavigate();
 
-  const calculatePercent = () => {
-    if (!project.targetAmount || project.targetAmount === 0) return 0;
-    return Math.floor((project.currentAmount / project.targetAmount) * 100);
-  };
+  const [liked, setLiked] = useState(Boolean(project.liked));
+  const [likePending, setLikePending] = useState(false);
 
-  const percent = calculatePercent();
+  // 목록 응답의 liked 가 갱신되면(찜 목록 재조회 등) 로컬 상태도 맞춘다.
+  useEffect(() => {
+    setLiked(Boolean(project.liked));
+  }, [project.liked]);
 
-  const handleHeartClick = (e) => {
+  // 서버가 achievementRate 를 내려주지만, 없을 때를 대비해 계산 경로를 남겨둔다.
+  const percent =
+    project.achievementRate ??
+    (project.targetAmount ? Math.floor((project.currentAmount / project.targetAmount) * 100) : 0);
+
+  const handleHeartClick = async (e) => {
     e.preventDefault();
-    setLiked(!liked);
+    e.stopPropagation();
+
+    if (!user) {
+      toast.info('찜하려면 로그인이 필요합니다.');
+      navigate('/login');
+      return;
+    }
+    if (likePending) return;
+
+    const next = !liked;
+    setLiked(next); // 낙관적 반영
+    setLikePending(true);
+
+    try {
+      if (next) {
+        await api.post(`/api/projects/${project.id}/like`);
+      } else {
+        await api.delete(`/api/projects/${project.id}/like`);
+      }
+    } catch (err) {
+      // 이미 찜한 상태였다면 서버 상태가 곧 next 다. 되돌릴 필요가 없다.
+      if (extractApiCode(err) === 'LIKE_001') {
+        setLiked(true);
+      } else {
+        setLiked(!next);
+        toast.error(extractApiMessage(err, '찜 처리에 실패했습니다.'));
+      }
+    } finally {
+      setLikePending(false);
+    }
   };
 
   return (
@@ -24,17 +65,19 @@ export default function ProjectCard({ project, rank }) {
       <Link to={`/projects/${project.id}`} className="card-link">
         <div className="thumbnail-wrapper">
           <img src={project.mainImage} alt={project.title} className="thumbnail-img" />
-          
+
           {rank && (
             <div className="rank-badge">
               <span>{rank}</span>
             </div>
           )}
 
-          <button 
+          <button
+            type="button"
             className={`heart-btn ${liked ? 'liked' : ''}`}
             onClick={handleHeartClick}
-            aria-label="좋아요 토글"
+            aria-pressed={liked}
+            aria-label={liked ? '찜 해제' : '찜하기'}
           >
             {liked ? <FaHeart className="heart-icon filled" /> : <FiHeart className="heart-icon" />}
           </button>
@@ -51,9 +94,7 @@ export default function ProjectCard({ project, rank }) {
 
           <div className="badge-row">
             <span className="badge-creator">◆ 좋은창작자</span>
-            {project.targetAmount >= 10000000 && (
-              <span className="badge-meta">{(project.targetAmount / 10000).toLocaleString()}만 원+</span>
-            )}
+            <StatusBadge status={project.status} endDate={project.endDate} />
           </div>
 
           <div className="card-metrics">
@@ -62,8 +103,8 @@ export default function ProjectCard({ project, rank }) {
           </div>
 
           <div className="progress-track">
-            <div 
-              className="progress-fill" 
+            <div
+              className="progress-fill"
               style={{ width: `${Math.min(100, percent)}%` }}
             />
           </div>

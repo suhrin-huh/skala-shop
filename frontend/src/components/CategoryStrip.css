@@ -13,7 +13,7 @@
   flex-direction: column;
   align-items: center;
   gap: var(--spacing-sm);
-  transition: transform 0.18s ease;
+  transition: transform var(--duration-hover) var(--ease-standard);
 }
 
 .category-tile-item:hover {
@@ -35,25 +35,30 @@
   font-size: 32px;
 }
 
-.tile-new-dot {
-  position: absolute;
-  top: -4px;
-  right: -4px;
-  width: 18px;
-  height: 18px;
-  background-color: var(--color-primary);
-  color: #fff;
-  font-size: 10px;
-  font-weight: 700;
-  border-radius: var(--rounded-full);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-
 .category-label {
-  font-size: 14px;
+  font: var(--font-body-sm);
+  font-weight: 500;
   color: var(--color-ink);
   text-align: center;
-  font-weight: 500;
+  white-space: nowrap;
+}
+
+/* 좁은 화면에서는 줄바꿈 대신 가로 스크롤 (스크롤바 숨김) */
+@media (max-width: 1128px) {
+  .category-grid {
+    display: flex;
+    gap: var(--spacing-base);
+    overflow-x: auto;
+    scrollbar-width: none;
+    -ms-overflow-style: none;
+  }
+
+  .category-grid::-webkit-scrollbar {
+    display: none;
+  }
+
+  .category-tile-item {
+    flex-shrink: 0;
+    width: 72px;
+  }
 }

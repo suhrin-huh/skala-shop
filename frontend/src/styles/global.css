@@ -83,10 +83,114 @@ input, textarea, select {
   width: 16px;
   height: 16px;
   background-color: var(--color-primary);
-  color: #fff;
+  color: var(--color-on-primary);
   border-radius: var(--rounded-full);
-  font-size: 10px;
-  font-weight: 700;
+  font: var(--font-micro-n);
+}
+
+/* ---------------------------------------------------------------
+   Shared form primitives.
+   PledgeModal.css 에만 있던 .form-group / .error-box 를 여기로 올렸다.
+   ProjectForm, ProjectListPage 등이 같은 규격을 쓰기 위해서다.
+   --------------------------------------------------------------- */
+.form-group {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-xs);
+}
+
+.form-group label {
+  font: var(--font-body-sm);
+  font-weight: 600;
+  color: var(--color-ink);
+}
+
+.form-group input,
+.form-group select,
+.form-group textarea {
+  padding: 0 var(--spacing-base);
+  border: 1px solid var(--color-border-strong);
+  border-radius: var(--rounded-sm-lg);
+  color: var(--color-ink);
+  background-color: var(--color-canvas);
+  outline: none;
+  transition: border-color var(--duration-hover) var(--ease-standard);
+}
+
+.form-group input,
+.form-group select {
+  height: 48px;
+  font-size: 16px;
+}
+
+.form-group textarea {
+  padding: var(--spacing-base);
+  font: var(--font-body-md);
+  resize: vertical;
+}
+
+.form-group input:focus,
+.form-group select:focus,
+.form-group textarea:focus {
+  border-color: var(--color-ink);
+}
+
+.form-group input::placeholder,
+.form-group textarea::placeholder {
+  color: var(--color-muted-soft);
+}
+
+.form-hint {
+  font: var(--font-caption);
+  color: var(--color-muted);
+}
+
+.error-box {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-sm);
+  background-color: var(--color-error-soft);
+  color: var(--color-error);
+  padding: var(--spacing-md);
+  border-radius: var(--rounded-sm);
+  font: var(--font-caption);
+}
+
+/* ---------------------------------------------------------------
+   Shared overlay primitives (PledgeModal / ConfirmModal 공용)
+   --------------------------------------------------------------- */
+.modal-scrim {
+  position: fixed;
+  inset: 0;
+  background-color: var(--color-scrim);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: var(--spacing-base);
+  z-index: var(--z-modal);
+}
+
+.modal-card {
+  position: relative;
+  width: 100%;
+  max-width: 480px;
+  background-color: var(--color-canvas);
+  border-radius: var(--rounded-md);
+  padding: var(--spacing-xl);
+  box-shadow: var(--elevation-floating);
+}
+
+.btn-cancel {
+  height: 48px;
+  padding: 0 var(--spacing-lg);
+  color: var(--color-muted);
+  font: var(--font-button-md);
+  border-radius: var(--rounded-sm);
+  transition: background-color var(--duration-hover) var(--ease-standard);
+}
+
+.btn-cancel:hover {
+  background-color: var(--color-surface-soft);
 }
 
 /* Primary Button */
@@ -101,7 +205,7 @@ input, textarea, select {
   font-size: 15px;
   font-weight: 600;
   border-radius: var(--rounded-sm);
-  transition: background-color 0.18s ease;
+  transition: background-color var(--duration-hover) var(--ease-standard);
 }
 
 .btn-primary:hover {
@@ -126,9 +230,14 @@ input, textarea, select {
   font-size: 14px;
   font-weight: 600;
   border-radius: var(--rounded-full);
-  transition: background-color 0.18s ease;
+  transition: background-color var(--duration-hover) var(--ease-standard);
 }
 
 .btn-outline-pill:hover {
   background-color: var(--color-surface-soft);
+}
+
+.btn-outline-pill:disabled,
+.btn-primary:disabled {
+  cursor: not-allowed;
 }

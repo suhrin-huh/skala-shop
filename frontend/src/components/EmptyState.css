@@ -1,0 +1,38 @@
+.empty-state-box {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  gap: var(--spacing-sm);
+  padding: var(--spacing-section) var(--spacing-base);
+}
+
+.empty-state-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 56px;
+  height: 56px;
+  margin-bottom: var(--spacing-sm);
+  border-radius: var(--rounded-full);
+  background-color: var(--color-surface-soft);
+  color: var(--color-muted-soft);
+  font-size: 24px;
+}
+
+.empty-state-title {
+  font: var(--font-card-title-lg);
+  color: var(--color-ink);
+}
+
+.empty-state-description {
+  font: var(--font-body-sm);
+  color: var(--color-muted);
+  max-width: 420px;
+  word-break: keep-all;
+}
+
+.empty-state-action {
+  margin-top: var(--spacing-md);
+}

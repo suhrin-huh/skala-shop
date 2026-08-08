@@ -47,7 +47,7 @@ export default function PledgeModal({ project, onClose, onSuccess }) {
 
   return (
     <div className="modal-scrim" onClick={onClose}>
-      <div className="pledge-modal-card" onClick={(e) => e.stopPropagation()}>
+      <div className="modal-card" onClick={(e) => e.stopPropagation()}>
         <button className="close-btn" onClick={onClose} aria-label="닫기">
           <FiX />
         </button>

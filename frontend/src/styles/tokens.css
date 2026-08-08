@@ -27,11 +27,20 @@
   --color-success: #2ba471;
   --color-warning: #f5a623;
   --color-error: #d92d20;
+  --color-error-soft: #fef2f2;
   --color-ad-label: #a5a5a8;
 
   /* Scrim */
   --color-scrim: rgba(0, 0, 0, 0.55);
   --color-scrim-hero: linear-gradient(90deg, rgba(0, 0, 0, 0.72) 0%, rgba(0, 0, 0, 0) 62%);
+
+  /* 이미지 위 오버레이 — 히어로 카운터 알약과 캐러셀 화살표 전용.
+     design-sheet 4장의 hero-counter(rgba(0,0,0,.45)) 규격을 토큰화한 것이다. */
+  --color-overlay-counter: rgba(0, 0, 0, 0.45);
+  --color-overlay-control-hover: rgba(0, 0, 0, 0.65);
+  --color-on-overlay: #ffffff;
+  --color-on-overlay-soft: rgba(255, 255, 255, 0.9);
+  --color-on-overlay-muted: rgba(255, 255, 255, 0.7);
 
   /* Typography */
   --font-family: "Pretendard Variable", Pretendard, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
@@ -88,12 +97,17 @@
   --sidebar-width: 356px;
   --grid-gutter: var(--spacing-lg);
 
+  /* Layering — 오버레이 순서를 한 곳에서 관리한다. 토스트는 항상 모달보다 위. */
+  --z-modal: 1000;
+  --z-toast: 1100;
+
   /* Motion */
   --ease-standard: cubic-bezier(0.2, 0, 0, 1);
   --duration-base: 200ms;
   --duration-hover: 180ms;
   --duration-heart: 140ms;
   --duration-carousel: 480ms;
+  --duration-shimmer: 1400ms;
   --carousel-interval: 6s;
 }
 
@@ -104,5 +118,6 @@
     --duration-hover: 0ms;
     --duration-heart: 0ms;
     --duration-carousel: 0ms;
+    --duration-shimmer: 0ms;
   }
 }

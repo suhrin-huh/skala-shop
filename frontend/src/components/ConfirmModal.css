@@ -1,0 +1,57 @@
+.confirm-modal-card {
+  max-width: 420px;
+}
+
+.confirm-modal-title {
+  font: var(--font-section-title);
+  letter-spacing: var(--tracking-section-title);
+  color: var(--color-ink);
+  margin-bottom: var(--spacing-md);
+}
+
+.confirm-modal-body {
+  font: var(--font-body-md);
+  color: var(--color-body);
+  white-space: pre-line;
+}
+
+/* 되돌릴 수 없는 결과(후원 취소 건수 등)를 눈에 띄게 고정한다. */
+.confirm-modal-impact {
+  margin-top: var(--spacing-base);
+  padding: var(--spacing-md) var(--spacing-base);
+  background-color: var(--color-surface-soft);
+  border-radius: var(--rounded-sm-lg);
+  font: var(--font-body-sm);
+  color: var(--color-ink);
+  font-weight: 600;
+}
+
+.confirm-modal-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: var(--spacing-md);
+  margin-top: var(--spacing-lg);
+}
+
+/* 파괴적 확인 버튼: 코랄(성과 신호)과 구분되도록 --color-error 를 쓴다. */
+.btn-danger {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  height: 48px;
+  padding: 0 var(--spacing-lg);
+  background-color: var(--color-error);
+  color: var(--color-on-primary);
+  font: var(--font-button-md);
+  border-radius: var(--rounded-sm);
+  transition: opacity var(--duration-hover) var(--ease-standard);
+}
+
+.btn-danger:hover {
+  opacity: 0.88;
+}
+
+.btn-danger:disabled {
+  cursor: not-allowed;
+  opacity: 0.6;
+}
