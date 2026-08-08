@@ -70,6 +70,7 @@ export default function ProjectForm({
   submittingLabel = '처리 중...',
   serverError = '',
   warning = null,
+  onDeleteClick,
 }) {
   const [categories, setCategories] = useState([]);
   const [values, setValues] = useState(() => initialValues || buildDefaults());
@@ -126,6 +127,12 @@ export default function ProjectForm({
   };
 
   const errorMessage = localError || serverError;
+
+  const submitButton = (
+    <button type="submit" className="btn-primary project-form-submit" disabled={submitting}>
+      {submitting ? submittingLabel : submitLabel}
+    </button>
+  );
 
   return (
     <form onSubmit={handleSubmit} className="project-form" noValidate>
@@ -223,9 +230,21 @@ export default function ProjectForm({
         </div>
       )}
 
-      <button type="submit" className="btn-primary project-form-submit" disabled={submitting}>
-        {submitting ? submittingLabel : submitLabel}
-      </button>
+      {onDeleteClick ? (
+        <div className="project-form-actions-row">
+          {submitButton}
+          <button
+            type="button"
+            className="btn-outline-pill project-form-delete"
+            onClick={onDeleteClick}
+            disabled={submitting}
+          >
+            프로젝트 삭제
+          </button>
+        </div>
+      ) : (
+        submitButton
+      )}
     </form>
   );
 }

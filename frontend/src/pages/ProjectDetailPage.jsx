@@ -5,7 +5,6 @@ import { useAuth } from '../contexts/AuthContext';
 import { useToast, extractApiMessage } from '../contexts/ToastContext';
 import { recordRecentlyViewed } from '../hooks/useRecentlyViewed';
 import PledgeModal from '../components/PledgeModal';
-import ConfirmModal from '../components/ConfirmModal';
 import StatusBadge from '../components/StatusBadge';
 import { ProjectDetailSkeleton } from '../components/Skeleton';
 import NotFoundPage from './NotFoundPage';
@@ -21,8 +20,6 @@ export default function ProjectDetailPage() {
   const [loading, setLoading] = useState(true);
   const [notFound, setNotFound] = useState(false);
   const [showPledgeModal, setShowPledgeModal] = useState(false);
-  const [showDeleteConfirm, setShowDeleteConfirm] = useState(false);
-  const [deleting, setDeleting] = useState(false);
 
   const fetchProject = useCallback(async () => {
     try {
@@ -52,24 +49,6 @@ export default function ProjectDetailPage() {
       cancelled = true;
     };
   }, [fetchProject]);
-
-  const handleDelete = async () => {
-    setDeleting(true);
-    try {
-      const res = await api.delete(`/api/projects/${id}`);
-      const cancelled = res.data.data?.cancelledPledgeCount || 0;
-      toast.success(
-        cancelled > 0
-          ? `프로젝트가 삭제되었습니다. 후원 ${cancelled.toLocaleString()}건이 취소 처리되었습니다.`
-          : '프로젝트가 삭제되었습니다.'
-      );
-      navigate('/');
-    } catch (err) {
-      toast.error(extractApiMessage(err, '삭제에 실패했습니다.'));
-      setDeleting(false);
-      setShowDeleteConfirm(false);
-    }
-  };
 
   if (loading) return <ProjectDetailSkeleton />;
 
@@ -139,18 +118,9 @@ export default function ProjectDetailPage() {
 
           <div className="action-buttons">
             {isCreator ? (
-              <div className="creator-actions">
-                <Link to={`/projects/${project.id}/edit`} className="btn-outline-pill edit-btn">
-                  프로젝트 수정
-                </Link>
-                <button
-                  type="button"
-                  onClick={() => setShowDeleteConfirm(true)}
-                  className="btn-outline-pill delete-btn"
-                >
-                  프로젝트 삭제
-                </button>
-              </div>
+              <Link to={`/projects/${project.id}/edit`} className="btn-outline-pill edit-btn">
+                프로젝트 수정
+              </Link>
             ) : (
               <button
                 type="button"
@@ -188,23 +158,6 @@ export default function ProjectDetailPage() {
             toast.success('후원 예약이 완료되었습니다. 마감일에 결제됩니다.');
             fetchProject(); // 전체 리로드 대신 상세만 다시 읽는다.
           }}
-        />
-      )}
-
-      {showDeleteConfirm && (
-        <ConfirmModal
-          title="프로젝트를 삭제할까요?"
-          message="삭제한 프로젝트는 되돌릴 수 없고, 목록과 검색에서 즉시 사라집니다."
-          impact={
-            pledgeCount > 0
-              ? `현재 후원자 ${pledgeCount.toLocaleString()}명의 후원이 모두 취소 처리되고 예약 포인트가 해제됩니다.`
-              : '아직 후원자가 없어 취소되는 후원은 없습니다.'
-          }
-          confirmLabel="삭제하기"
-          danger
-          loading={deleting}
-          onConfirm={handleDelete}
-          onCancel={() => setShowDeleteConfirm(false)}
         />
       )}
     </div>

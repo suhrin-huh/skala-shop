@@ -56,6 +56,22 @@
   font-size: 17px;
 }
 
+.project-form-actions-row {
+  display: flex;
+  gap: var(--spacing-md);
+  margin-top: var(--spacing-md);
+}
+
+.project-form-actions-row .project-form-submit {
+  width: auto;
+  flex: 1;
+  margin-top: 0;
+}
+
+.project-form-delete {
+  flex: 1;
+}
+
 @media (max-width: 744px) {
   .project-form {
     padding: var(--spacing-lg);

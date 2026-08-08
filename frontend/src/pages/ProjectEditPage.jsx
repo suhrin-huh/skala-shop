@@ -4,6 +4,7 @@ import { FiLock } from 'react-icons/fi';
 import api from '../api/client';
 import ProjectForm from '../components/ProjectForm';
 import EmptyState from '../components/EmptyState';
+import ConfirmModal from '../components/ConfirmModal';
 import NotFoundPage from './NotFoundPage';
 import Skeleton from '../components/Skeleton';
 import { useAuth } from '../contexts/AuthContext';
@@ -24,6 +25,8 @@ export default function ProjectEditPage() {
   const [notFound, setNotFound] = useState(false);
   const [submitting, setSubmitting] = useState(false);
   const [serverError, setServerError] = useState('');
+  const [showDeleteConfirm, setShowDeleteConfirm] = useState(false);
+  const [deleting, setDeleting] = useState(false);
 
   useEffect(() => {
     let cancelled = false;
@@ -103,6 +106,26 @@ export default function ProjectEditPage() {
     );
   }
 
+  const pledgeCount = project.pledgeCount || 0;
+
+  const handleDelete = async () => {
+    setDeleting(true);
+    try {
+      const res = await api.delete(`/api/projects/${id}`);
+      const cancelled = res.data.data?.cancelledPledgeCount || 0;
+      toast.success(
+        cancelled > 0
+          ? `프로젝트가 삭제되었습니다. 후원 ${cancelled.toLocaleString()}건이 취소 처리되었습니다.`
+          : '프로젝트가 삭제되었습니다.'
+      );
+      navigate('/mypage');
+    } catch (err) {
+      toast.error(extractApiMessage(err, '삭제에 실패했습니다.'));
+      setDeleting(false);
+      setShowDeleteConfirm(false);
+    }
+  };
+
   // 창작자 본인이 아니면 폼 자체를 렌더링하지 않는다. (서버도 PROJECT_002 로 막지만 화면에서 먼저 차단)
   if (!user || user.id !== project.creator?.id) {
     return (
@@ -127,18 +150,42 @@ export default function ProjectEditPage() {
         <EmptyState
           icon={FiLock}
           title="이미 마감된 프로젝트입니다"
-          description="펀딩이 종료된 프로젝트는 수정할 수 없습니다."
+          description="펀딩이 종료된 프로젝트는 수정할 수 없습니다. 삭제는 계속 가능합니다."
           action={
-            <Link to={`/projects/${id}`} className="btn-outline-pill">
-              프로젝트 상세로 가기
-            </Link>
+            <div className="project-form-closed-actions">
+              <Link to={`/projects/${id}`} className="btn-outline-pill">
+                프로젝트 상세로 가기
+              </Link>
+              <button
+                type="button"
+                className="btn-outline-pill"
+                onClick={() => setShowDeleteConfirm(true)}
+              >
+                프로젝트 삭제
+              </button>
+            </div>
           }
         />
+        {showDeleteConfirm && (
+          <ConfirmModal
+            title="프로젝트를 삭제할까요?"
+            message="삭제한 프로젝트는 되돌릴 수 없고, 목록과 검색에서 즉시 사라집니다."
+            impact={
+              pledgeCount > 0
+                ? `현재 후원자 ${pledgeCount.toLocaleString()}명의 후원이 모두 취소 처리되고 예약 포인트가 해제됩니다.`
+                : '아직 후원자가 없어 취소되는 후원은 없습니다.'
+            }
+            confirmLabel="삭제하기"
+            danger
+            loading={deleting}
+            onConfirm={handleDelete}
+            onCancel={() => setShowDeleteConfirm(false)}
+          />
+        )}
       </div>
     );
   }
 
-  const pledgeCount = project.pledgeCount || 0;
   const warning =
     pledgeCount > 0
       ? `이미 ${pledgeCount.toLocaleString()}명이 후원한 프로젝트입니다. ` +
@@ -160,7 +207,25 @@ export default function ProjectEditPage() {
         submitLabel="수정 내용 저장하기"
         submittingLabel="저장 중..."
         warning={warning}
+        onDeleteClick={() => setShowDeleteConfirm(true)}
       />
+
+      {showDeleteConfirm && (
+        <ConfirmModal
+          title="프로젝트를 삭제할까요?"
+          message="삭제한 프로젝트는 되돌릴 수 없고, 목록과 검색에서 즉시 사라집니다."
+          impact={
+            pledgeCount > 0
+              ? `현재 후원자 ${pledgeCount.toLocaleString()}명의 후원이 모두 취소 처리되고 예약 포인트가 해제됩니다.`
+              : '아직 후원자가 없어 취소되는 후원은 없습니다.'
+          }
+          confirmLabel="삭제하기"
+          danger
+          loading={deleting}
+          onConfirm={handleDelete}
+          onCancel={() => setShowDeleteConfirm(false)}
+        />
+      )}
     </div>
   );
 }

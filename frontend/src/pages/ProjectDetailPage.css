@@ -130,15 +130,6 @@
   font-weight: 700;
 }
 
-.creator-actions {
-  display: flex;
-  gap: var(--spacing-md);
-}
-
-.creator-actions .btn-outline-pill {
-  flex: 1;
-}
-
 .detail-description-section {
   border-top: 1px solid var(--color-hairline);
   padding-top: var(--spacing-section);

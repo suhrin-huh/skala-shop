@@ -22,3 +22,9 @@
   font: var(--font-body-sm);
   color: var(--color-muted);
 }
+
+.project-form-closed-actions {
+  display: flex;
+  gap: var(--spacing-md);
+  justify-content: center;
+}
