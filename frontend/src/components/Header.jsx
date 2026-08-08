@@ -1,20 +1,24 @@
-import React, { useState } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
-import { FiSearch, FiMenu, FiSmartphone } from 'react-icons/fi';
-import { useAuth } from '../contexts/AuthContext';
-import './Header.css';
+import React, { useState } from "react";
+import { Link, useNavigate } from "react-router-dom";
+import { FiSearch, FiMenu, FiSmartphone } from "react-icons/fi";
+import { useAuth } from "../contexts/AuthContext";
+import "./Header.css";
 
 export default function Header() {
   const { user, logout } = useAuth();
-  const [keyword, setKeyword] = useState('');
-  const [activeTab, setActiveTab] = useState('home');
+  const [keyword, setKeyword] = useState("");
+  const [activeTab, setActiveTab] = useState("home");
   const navigate = useNavigate();
 
   const handleSearch = (e) => {
     e.preventDefault();
     // 프론트에서도 trim. 공백만 입력하면 전체 목록으로 보낸다.
     const trimmed = keyword.trim();
-    navigate(trimmed ? `/projects?keyword=${encodeURIComponent(trimmed)}` : '/projects');
+    navigate(
+      trimmed
+        ? `/projects?keyword=${encodeURIComponent(trimmed)}`
+        : "/projects",
+    );
   };
 
   return (
@@ -23,7 +27,9 @@ export default function Header() {
       <div className="utility-bar">
         <div className="container utility-content">
           <div className="utility-store-links">
-            <span className="utility-item"><FiSmartphone /> 오직 앱에서만</span>
+            <span className="utility-item">
+              <FiSmartphone /> 오직 앱에서만
+            </span>
           </div>
         </div>
       </div>
@@ -55,7 +61,7 @@ export default function Header() {
             {user ? (
               <div className="user-menu">
                 <Link to="/mypage" className="util-link nickname-link">
-                  {user.nickname}님
+                  마이페이지
                 </Link>
                 <button onClick={logout} className="util-link logout-btn">
                   로그아웃
@@ -79,16 +85,31 @@ export default function Header() {
           </button>
 
           <ul className="nav-tabs">
-            <li className={`nav-tab-item ${activeTab === 'home' ? 'active' : ''}`}>
-              <Link to="/" onClick={() => setActiveTab('home')}>홈</Link>
+            <li
+              className={`nav-tab-item ${activeTab === "home" ? "active" : ""}`}
+            >
+              <Link to="/" onClick={() => setActiveTab("home")}>
+                홈
+              </Link>
             </li>
-            <li className={`nav-tab-item ${activeTab === 'popular' ? 'active' : ''}`}>
+            <li
+              className={`nav-tab-item ${activeTab === "popular" ? "active" : ""}`}
+            >
               {/* 정렬 값은 Spring 형식 그대로다. (sort=currentAmount,desc) */}
-              <Link to="/projects?sort=currentAmount%2Cdesc" onClick={() => setActiveTab('popular')}>인기</Link>
+              <Link
+                to="/projects?sort=currentAmount%2Cdesc"
+                onClick={() => setActiveTab("popular")}
+              >
+                인기
+              </Link>
             </li>
-            <li className={`nav-tab-item ${activeTab === 'new' ? 'active' : ''}`}>
+            <li
+              className={`nav-tab-item ${activeTab === "new" ? "active" : ""}`}
+            >
               <span className="badge-n">N</span>
-              <Link to="/projects" onClick={() => setActiveTab('new')}>신규</Link>
+              <Link to="/projects" onClick={() => setActiveTab("new")}>
+                신규
+              </Link>
             </li>
           </ul>
 
