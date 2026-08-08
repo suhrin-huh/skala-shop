@@ -1,0 +1,14 @@
+# node_modules 는 컨테이너 안에서 npm ci 로 다시 설치한다.
+# 호스트(Windows)에서 만든 네이티브 모듈이 alpine 에서 그대로 동작하지 않는다.
+node_modules/
+dist/
+dist-ssr/
+
+*.log
+.env
+.env.*
+!.env.example
+
+.idea/
+.vscode/
+.DS_Store

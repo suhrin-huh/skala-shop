@@ -17,6 +17,12 @@ spring:
         format_sql: true
         dialect: org.hibernate.dialect.H2Dialect
 
+  flyway:
+    # dev 는 H2 를 create-drop 으로 매번 새로 만들고 카테고리는 CategoryInitializer 가 넣는다.
+    # 마이그레이션 SQL 은 MySQL 8 문법이므로 여기서 돌릴 이유도, 돌려서 좋을 것도 없다.
+    # 명시하지 않으면 flyway-core 가 클래스패스에 있다는 이유만으로 자동 실행 대상이 된다.
+    enabled: false
+
 management:
   endpoints:
     web:

@@ -1,0 +1,79 @@
+# SKALA-FUND 운영 구성 (EC2 1대)
+#
+#   인터넷 ──80/443──> nginx ──> app-blue | app-green (내부 8080)
+#                                        └──> RDS MySQL (컨테이너 아님)
+#
+# 이 파일은 EC2 의 배포 디렉터리(기본 /opt/skala-fund)에 .env 와 함께 둔다.
+#   docker compose --env-file .env up -d
+#
+# 앱 컨테이너는 ports 를 선언하지 않는다. 호스트에 8080 이 열리면 Nginx 를 건너뛴
+# 직접 접근이 가능해지고, 보안 그룹으로 막아도 EC2 내부에서는 그대로 뚫린다.
+# 외부에 열리는 것은 Nginx 의 80/443 뿐이다.
+#
+# 블루/그린은 scripts/deploy.sh 가 제어한다. 이 파일에 두 서비스가 모두 정의돼 있지만
+# 평상시에 떠 있는 것은 둘 중 하나뿐이다.
+
+name: skala-fund
+
+# 백엔드와 프론트는 서로 다른 시점에 배포되므로 이미지 태그를 하나로 공유하면 안 된다.
+# (백엔드만 배포한 뒤 재부팅하면 nginx 가 존재하지 않는 태그를 찾게 된다)
+x-app-common: &app-common
+  image: ${ECR_REGISTRY}/${BACKEND_REPOSITORY:-skala-fund-backend}:${BACKEND_IMAGE_TAG:-latest}
+  restart: unless-stopped
+  environment:
+    SPRING_PROFILES_ACTIVE: prod
+    DB_HOST: ${DB_HOST}
+    DB_PORT: ${DB_PORT:-3306}
+    DB_NAME: ${DB_NAME}
+    DB_USERNAME: ${DB_USERNAME}
+    DB_PASSWORD: ${DB_PASSWORD}
+    DB_POOL_SIZE: ${DB_POOL_SIZE:-10}
+    JWT_SECRET: ${JWT_SECRET}
+    AWS_REGION: ${AWS_REGION:-ap-northeast-2}
+    AWS_ACCESS_KEY_ID: ${AWS_ACCESS_KEY_ID}
+    AWS_SECRET_ACCESS_KEY: ${AWS_SECRET_ACCESS_KEY}
+    AWS_S3_BUCKET: ${AWS_S3_BUCKET}
+    TZ: Asia/Seoul
+  networks:
+    - skala-net
+  # 컨테이너 로그가 디스크를 채우는 것을 막는다.
+  # 정산 배치 로그를 여기서 읽으므로(docs/infrastructure.md) 보존량을 너무 줄이지 말 것.
+  logging:
+    driver: json-file
+    options:
+      max-size: "20m"
+      max-file: "5"
+
+services:
+  nginx:
+    image: ${ECR_REGISTRY}/${FRONTEND_REPOSITORY:-skala-fund-frontend}:${FRONTEND_IMAGE_TAG:-latest}
+    container_name: nginx
+    restart: unless-stopped
+    ports:
+      - "80:80"
+      - "443:443"
+    volumes:
+      # Let's Encrypt 인증서. certbot 이 호스트에 발급해 둔 것을 읽기 전용으로 마운트한다.
+      # 인증서를 아직 발급하지 않았다면 아래 두 줄을 주석 처리한 채로 80 만 사용한다.
+      - /etc/letsencrypt:/etc/letsencrypt:ro
+      - /var/www/certbot:/var/www/certbot:ro
+    networks:
+      - skala-net
+    logging:
+      driver: json-file
+      options:
+        max-size: "20m"
+        max-file: "3"
+
+  app-blue:
+    <<: *app-common
+    container_name: app-blue
+
+  app-green:
+    <<: *app-common
+    container_name: app-green
+
+networks:
+  skala-net:
+    name: skala-net
+    driver: bridge

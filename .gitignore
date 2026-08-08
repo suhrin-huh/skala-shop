@@ -28,6 +28,10 @@ uploads/
 .env.*
 !.env.example
 
+# 블루/그린 활성 슬롯 기록. EC2 호스트마다 값이 다르므로 커밋하지 않는다.
+# (CD 가 EC2 에서 git reset --hard 를 하므로 추적 대상이 되면 배포 때마다 날아간다)
+.deploy-state
+
 # Compiled class file
 *.class
 *.war

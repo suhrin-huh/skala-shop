@@ -1,0 +1,18 @@
+# 빌드 컨텍스트에서 제외한다. 특히 build/ 와 .gradle/ 은 호스트 산출물이라
+# 컨테이너 안으로 들어가면 빌드가 꼬이고 컨텍스트 전송만 무거워진다.
+.gradle/
+build/
+bin/
+out/
+
+*.log
+.env
+.env.*
+!.env.example
+
+.idea/
+.vscode/
+*.iml
+.DS_Store
+
+uploads/

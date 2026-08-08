@@ -1,0 +1,105 @@
+name: CD - Backend
+
+# main 에 백엔드 변경이 들어왔을 때만 돈다 (paths 필터).
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'backend/**'
+      - '.github/workflows/cd-backend.yml'
+      - 'scripts/deploy.sh'
+      - 'docker-compose.yml'
+
+# EC2 는 한 대뿐이다. 백엔드/프론트 배포가 동시에 nginx 를 건드리면 서로를 덮어쓴다.
+# 두 CD 워크플로가 같은 그룹을 쓰게 해서 직렬화한다. 배포는 취소하지 않고 줄을 세운다.
+concurrency:
+  group: deploy-prod
+  cancel-in-progress: false
+
+env:
+  AWS_REGION: ${{ secrets.AWS_REGION }}
+  ECR_REPOSITORY: ${{ secrets.BACKEND_ECR_REPOSITORY }}
+
+jobs:
+  build-and-push:
+    name: Build & Push to ECR
+    runs-on: ubuntu-latest
+    outputs:
+      image_tag: ${{ steps.meta.outputs.image_tag }}
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: 이미지 태그 결정 (커밋 SHA)
+        id: meta
+        # latest 만 쓰면 롤백할 대상이 없다. 커밋 SHA 태그를 함께 남긴다.
+        run: echo "image_tag=${GITHUB_SHA::12}" >> "$GITHUB_OUTPUT"
+
+      - name: AWS 자격증명 설정
+        uses: aws-actions/configure-aws-credentials@v4
+        with:
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-region: ${{ env.AWS_REGION }}
+
+      - name: ECR 로그인
+        id: ecr
+        uses: aws-actions/amazon-ecr-login@v2
+
+      - name: Docker Buildx
+        uses: docker/setup-buildx-action@v3
+
+      - name: Build & Push
+        uses: docker/build-push-action@v6
+        with:
+          context: ./backend
+          file: ./backend/Dockerfile
+          push: true
+          tags: |
+            ${{ steps.ecr.outputs.registry }}/${{ env.ECR_REPOSITORY }}:${{ steps.meta.outputs.image_tag }}
+            ${{ steps.ecr.outputs.registry }}/${{ env.ECR_REPOSITORY }}:latest
+          # GitHub Actions 캐시로 Gradle 의존성 레이어를 재사용한다.
+          cache-from: type=gha,scope=backend
+          cache-to: type=gha,scope=backend,mode=max
+
+  deploy:
+    name: Blue/Green Deploy on EC2
+    needs: build-and-push
+    runs-on: ubuntu-latest
+    steps:
+      - name: SSH 접속 후 배포 스크립트 실행
+        uses: appleboy/ssh-action@v1.2.0
+        with:
+          host: ${{ secrets.EC2_HOST }}
+          username: ${{ secrets.EC2_USER }}
+          key: ${{ secrets.EC2_SSH_KEY }}
+          port: ${{ secrets.EC2_SSH_PORT || 22 }}
+          # 배포 스크립트가 헬스체크에 최대 120초를 쓴다. 여유를 둔다.
+          command_timeout: 15m
+          script_stop: true
+          envs: BACKEND_IMAGE_TAG,AWS_REGION,ECR_REGISTRY
+          script: |
+            set -Eeuo pipefail
+            cd "${{ secrets.EC2_DEPLOY_PATH }}"
+
+            # 저장소의 compose 파일과 배포 스크립트를 최신으로 맞춘다.
+            # .env 와 .deploy-state 는 gitignore 대상이라 reset --hard 에도 살아남는다.
+            git fetch --prune origin main
+            git reset --hard origin/main
+            chmod +x scripts/*.sh
+
+            # .env 의 BACKEND_IMAGE_TAG 를 이번 배포 태그로 갱신한다.
+            # (스크립트가 인자로도 받지만, 재부팅 후 compose up 이 같은 태그를 쓰도록 파일에도 남긴다)
+            if grep -q '^BACKEND_IMAGE_TAG=' .env; then
+              sed -i "s#^BACKEND_IMAGE_TAG=.*#BACKEND_IMAGE_TAG=${BACKEND_IMAGE_TAG}#" .env
+            else
+              echo "BACKEND_IMAGE_TAG=${BACKEND_IMAGE_TAG}" >> .env
+            fi
+
+            aws ecr get-login-password --region "${AWS_REGION}" \
+              | docker login --username AWS --password-stdin "${ECR_REGISTRY}"
+
+            ./scripts/deploy.sh "${BACKEND_IMAGE_TAG}"
+        env:
+          BACKEND_IMAGE_TAG: ${{ needs.build-and-push.outputs.image_tag }}
+          AWS_REGION: ${{ secrets.AWS_REGION }}
+          ECR_REGISTRY: ${{ secrets.ECR_REGISTRY }}
