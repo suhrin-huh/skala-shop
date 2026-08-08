@@ -28,7 +28,7 @@ export default function Header() {
         <div className="container utility-content">
           <div className="utility-store-links">
             <span className="utility-item">
-              <FiSmartphone /> 오직 앱에서만
+              <FiSmartphone /> SKALA-FUND
             </span>
           </div>
         </div>
@@ -38,7 +38,7 @@ export default function Header() {
       <div className="header-main">
         <div className="container header-main-content">
           <Link to="/" className="brand-logo">
-            <span className="logo-text">tumblbug</span>
+            <span className="logo-text">SKALA-FUND</span>
           </Link>
 
           <form className="search-field" onSubmit={handleSearch}>
@@ -55,7 +55,7 @@ export default function Header() {
 
           <div className="header-utilities">
             <Link to="/projects/new" className="util-link">
-              프로젝트 올리기
+              프로젝트 생성
             </Link>
 
             {user ? (
@@ -79,45 +79,15 @@ export default function Header() {
       {/* 3. Navigation Bar */}
       <nav className="nav-bar">
         <div className="container nav-content">
-          <button className="category-toggle-btn">
-            <FiMenu />
-            <span>카테고리</span>
-          </button>
-
           <ul className="nav-tabs">
             <li
               className={`nav-tab-item ${activeTab === "home" ? "active" : ""}`}
             >
               <Link to="/" onClick={() => setActiveTab("home")}>
-                홈
-              </Link>
-            </li>
-            <li
-              className={`nav-tab-item ${activeTab === "popular" ? "active" : ""}`}
-            >
-              {/* 정렬 값은 Spring 형식 그대로다. (sort=currentAmount,desc) */}
-              <Link
-                to="/projects?sort=currentAmount%2Cdesc"
-                onClick={() => setActiveTab("popular")}
-              >
-                인기
-              </Link>
-            </li>
-            <li
-              className={`nav-tab-item ${activeTab === "new" ? "active" : ""}`}
-            >
-              <span className="badge-n">N</span>
-              <Link to="/projects" onClick={() => setActiveTab("new")}>
-                신규
+                HOME
               </Link>
             </li>
           </ul>
-
-          <div className="nav-right-btn">
-            <Link to="/projects/new" className="btn-outline-pill">
-              창작자센터
-            </Link>
-          </div>
         </div>
       </nav>
     </header>
