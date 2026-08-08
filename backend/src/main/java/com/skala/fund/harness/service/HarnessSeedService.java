@@ -30,7 +30,7 @@ import java.util.List;
  * 후원은 마감 전에만 가능하므로, 후원을 먼저 만들고 마감일을 과거로 되돌리는 순서로 만든다.
  */
 @Slf4j
-@Profile({"dev", "local"})
+@Profile("dev")
 @Service
 @RequiredArgsConstructor
 public class HarnessSeedService {

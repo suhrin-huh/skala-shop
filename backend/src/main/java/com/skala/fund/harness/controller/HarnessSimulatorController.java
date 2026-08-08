@@ -18,7 +18,7 @@ import org.springframework.web.bind.annotation.RestController;
  * prod 프로파일에서는 절대 활성화되지 않는다.
  */
 @Slf4j
-@Profile({"dev", "local"})
+@Profile("dev")
 @RestController
 @RequestMapping("/api/harness")
 @RequiredArgsConstructor
